@@ -7,7 +7,8 @@ import (
 	"os"
 	"strings"
 	"time"
-	// "github.com/martinlindhe/morse"
+
+	"github.com/martinlindhe/morse"
 )
 
 // List of prosigns
@@ -28,11 +29,17 @@ func main() {
 	rx := getRandomCallsign(callsigns)
 	rxLocation := "DALLAS TX USA"
 	rxName := "JANE"
-	fmt.Println("CQ CQ CQ DE", cx, cx, cx, " K")
-	fmt.Println(cx, "DE", rx, rx, rx, "KN")
-
+	fmt.Printf(initialGreeting(cx, rx))
+	fmt.Printf("%s\n", morse.EncodeITU(initialGreeting(cx, rx)))
 	fmt.Println(rx, "DE", cx, "TNX FOR CALL BT UR RST 599 599 HR QTH", cxLocation, cxLocation, "NAME", cxName, cxName, "HW CPY?", rx, "DE", cx, "KN")
 	fmt.Println(cx, "DE", rx, "TNX FOR RPT SLD CPY FB UR RST 599 599 BT NAME", rxName, rxName, "QTH", rxLocation, rxLocation)
+}
+
+func initialGreeting(cx, rx string) string {
+	cxRepeat := fmt.Sprintf("%s %s %s", cx, cx, cx)
+	rxRepeat := fmt.Sprintf("%s %s %s", rx, rx, rx)
+	msg := fmt.Sprintf("CQ CQ CQ DE %s K\n%s DE %s KN\n", cxRepeat, cx, rxRepeat)
+	return msg
 }
 
 func readCallsigns() *[]string {
