@@ -3,8 +3,10 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math/rand"
 	"os"
 	"strings"
+	"time"
 	// "github.com/martinlindhe/morse"
 )
 
@@ -18,8 +20,19 @@ var (
 )
 
 func main() {
+	rand.Seed(time.Now().Unix())
 	callsigns := readCallsigns()
-	fmt.Printf("%+s\n", callsigns)
+	cx := getRandomCallsign(callsigns)
+	cxLocation := "NEW WESTMINSTER BC CANADA"
+	cxName := "HUGH"
+	rx := getRandomCallsign(callsigns)
+	rxLocation := "DALLAS TX USA"
+	rxName := "JANE"
+	fmt.Println("CQ CQ CQ DE", cx, cx, cx, " K")
+	fmt.Println(cx, "DE", rx, rx, rx, "KN")
+
+	fmt.Println(rx, "DE", cx, "TNX FOR CALL BT UR RST 599 599 HR QTH", cxLocation, cxLocation, "NAME", cxName, cxName, "HW CPY?", rx, "DE", cx, "KN")
+	fmt.Println(cx, "DE", rx, "TNX FOR RPT SLD CPY FB UR RST 599 599 BT NAME", rxName, rxName, "QTH", rxLocation, rxLocation)
 }
 
 func readCallsigns() *[]string {
@@ -37,4 +50,8 @@ func readCallsigns() *[]string {
 	}
 	// fmt.Printf("%+s\n", callsigns)
 	return &callsigns
+}
+
+func getRandomCallsign(cs *[]string) string {
+	return (*cs)[rand.Intn(len(*cs))]
 }
