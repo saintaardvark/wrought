@@ -30,9 +30,44 @@ func main() {
 	rxLocation := "DALLAS TX USA"
 	rxName := "JANE"
 	fmt.Printf(initialGreeting(cx, rx))
-	fmt.Printf("%s\n", morse.EncodeITU(initialGreeting(cx, rx)))
-	fmt.Println(rx, "DE", cx, "TNX FOR CALL BT UR RST 599 599 HR QTH", cxLocation, cxLocation, "NAME", cxName, cxName, "HW CPY?", rx, "DE", cx, "KN")
-	fmt.Println(cx, "DE", rx, "TNX FOR RPT SLD CPY FB UR RST 599 599 BT NAME", rxName, rxName, "QTH", rxLocation, rxLocation)
+	// printMorse(initialGreeting(cx, rx))
+	fmt.Println(firstExchange(rx, cx, cxName, cxLocation))
+	fmt.Println(secondExchange(rx, cx, rxName, rxLocation))
+}
+
+func firstExchange(rx, cx, cxName, cxLocation string) string {
+	msg := fmt.Sprintf("%s DE %s ", rx, cx)
+	msg = msg + "TNX FOR CALL BT UR RST 599 599 HR "
+	msg = msg + qth(cxLocation) + " "
+	msg = msg + name(cxName) + " "
+	msg = msg + "HW CPY? "
+	msg = msg + kn(rx, cx)
+	return msg
+}
+
+func name(name string) string {
+	return fmt.Sprintf("NAME %s %s", name, name)
+}
+
+func qth(location string) string {
+	return fmt.Sprintf("QTH %s %s", location, location)
+}
+
+func kn(cx, rx string) string {
+	return fmt.Sprintf("%s DE %s", cx, rx)
+}
+
+func secondExchange(rx, cx, rxName, rxLocation string) string {
+	msg := fmt.Sprintf("%s DE %s ", cx, rx)
+	msg = msg + "TNX FOR RPT SLD CPY FB UR RST 599 599 BT"
+	msg = msg + name(rxName) + " "
+	msg = msg + qth(rxLocation) + " "
+	msg = msg + kn(rx, cx)
+	return msg
+}
+
+func printMorse(msg string) {
+	fmt.Println(morse.EncodeITU(msg))
 }
 
 func initialGreeting(cx, rx string) string {
