@@ -33,15 +33,40 @@ func main() {
 	// printMorse(initialGreeting(cx, rx))
 	fmt.Println(firstExchange(rx, cx, cxName, cxLocation))
 	fmt.Println(secondExchange(rx, cx, rxName, rxLocation))
+	fmt.Println(gnightBob(cx, rx, rxName))
+}
+
+func initialGreeting(cx, rx string) string {
+	cxRepeat := fmt.Sprintf("%s %s %s", cx, cx, cx)
+	rxRepeat := fmt.Sprintf("%s %s %s", rx, rx, rx)
+	msg := fmt.Sprintf("CQ CQ CQ DE %s K\n%s DE %s KN\n", cxRepeat, cx, rxRepeat)
+	return msg
 }
 
 func firstExchange(rx, cx, cxName, cxLocation string) string {
-	msg := fmt.Sprintf("%s DE %s ", rx, cx)
+	msg := de(rx, cx) + " "
 	msg = msg + "TNX FOR CALL BT UR RST 599 599 HR "
 	msg = msg + qth(cxLocation) + " "
 	msg = msg + name(cxName) + " "
 	msg = msg + "HW CPY? "
 	msg = msg + kn(rx, cx)
+	return msg
+}
+
+func secondExchange(rx, cx, rxName, rxLocation string) string {
+	msg := de(rx, cx) + " "
+	msg = msg + "TNX FOR RPT SLD CPY FB UR RST 599 599 BT" + " "
+	msg = msg + name(rxName) + " "
+	msg = msg + qth(rxLocation) + " "
+	msg = msg + kn(rx, cx)
+	return msg
+}
+
+func gnightBob(cx, rx, rxName string) string {
+	msg := de(cx, rx) + " "
+	msg = msg + "TNX FER FB QSO " + rxName + " "
+	msg = msg + "HP CU AGN BT VY 73 TO U ES URS SK" + " "
+	msg = msg + de(cx, rx)
 	return msg
 }
 
@@ -53,28 +78,16 @@ func qth(location string) string {
 	return fmt.Sprintf("QTH %s %s", location, location)
 }
 
-func kn(cx, rx string) string {
+func de(cx, rx string) string {
 	return fmt.Sprintf("%s DE %s", cx, rx)
 }
 
-func secondExchange(rx, cx, rxName, rxLocation string) string {
-	msg := fmt.Sprintf("%s DE %s ", cx, rx)
-	msg = msg + "TNX FOR RPT SLD CPY FB UR RST 599 599 BT"
-	msg = msg + name(rxName) + " "
-	msg = msg + qth(rxLocation) + " "
-	msg = msg + kn(rx, cx)
-	return msg
+func kn(cx, rx string) string {
+	return fmt.Sprintf("%s KN", de(cx, rx))
 }
 
 func printMorse(msg string) {
 	fmt.Println(morse.EncodeITU(msg))
-}
-
-func initialGreeting(cx, rx string) string {
-	cxRepeat := fmt.Sprintf("%s %s %s", cx, cx, cx)
-	rxRepeat := fmt.Sprintf("%s %s %s", rx, rx, rx)
-	msg := fmt.Sprintf("CQ CQ CQ DE %s K\n%s DE %s KN\n", cxRepeat, cx, rxRepeat)
-	return msg
 }
 
 func readCallsigns() *[]string {
