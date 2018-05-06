@@ -83,6 +83,10 @@ func gnightBob(caller, receiver *Ham) string {
 	msg = msg + "TNX FER FB QSO " + receiver.Name + " "
 	msg = msg + "HP CU AGN BT VY 73 TO U ES URS SK" + " "
 	msg = msg + de(caller.Callsign, receiver.Callsign)
+	msg = de(caller.Callsign, receiver.Callsign) + " "
+	msg = msg + "TNX FER FB QSO " + receiver.Name + " "
+	msg = msg + "HP CU AGN BT VY 73 TO U ES URS SK" + " "
+	msg = msg + de(caller.Callsign, receiver.Callsign)
 	return msg
 }
 
