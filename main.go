@@ -74,7 +74,7 @@ func secondExchange(caller, receiver *Ham) string {
 	msg = msg + "TNX FOR RPT SLD CPY FB UR RST 599 599 BT" + " "
 	msg = msg + name(receiver.Name) + " "
 	msg = msg + qth(receiver.Location) + " "
-	msg = msg + kn(receiver.Name, caller.Name)
+	msg = msg + kn(receiver.Callsign, caller.Callsign)
 	return msg
 }
 
