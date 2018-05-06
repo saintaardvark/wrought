@@ -25,6 +25,7 @@ type Ham struct {
 
 var (
 	callsignFile = "/home/aardvark/.qrq/toplist"
+	citiesFile   = "./data/world-cities/data/world-cities.csv"
 	me           = Ham{
 		Callsign: "VA7UNX",
 		Location: "NEW WESTMINSTER BC CANADA",
@@ -46,7 +47,7 @@ func main() {
 func newHam() *Ham {
 	ham := Ham{
 		Callsign: getRandomCallsign(),
-		Location: "DALLAS TX USA",
+		Location: getRandomCity(),
 		Name:     "JANE",
 	}
 	return &ham
@@ -130,4 +131,27 @@ func readCallsigns() *[]string {
 func getRandomCallsign() string {
 	cs := readCallsigns()
 	return (*cs)[rand.Intn(len(*cs))]
+}
+
+func readCities() *[]string {
+	var cities []string
+	file, err := os.Open(citiesFile)
+	if err != nil {
+		fmt.Printf("Can't read %s: %s", citiesFile, err)
+	}
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		city, country, subcountry, _ := strings.SplitN(scanner.Text(), ",", 4)
+		// fmt.Printf("%+s\n", cs[0])
+		cities = append(cities, fmt.Sprintf("%s %s %s", city, country, subcountry))
+	}
+	// fmt.Printf("%+s\n", callsigns)
+	return &cities
+
+}
+
+func getRandomCity() string {
+	cities := readCities()
+	return (*cities)[rand.Intn(len(*cities))]
 }
