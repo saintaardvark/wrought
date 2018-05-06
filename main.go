@@ -39,18 +39,9 @@ func main() {
 	rx := newHam()
 	fmt.Printf(initialGreeting(cx, rx))
 	// printMorse(initialGreeting(cx, rx))
-	fmt.Println(firstExchange(rx, cx))
-	fmt.Println(secondExchange(rx, cx))
+	fmt.Println(firstExchange(cx, rx))
+	fmt.Println(secondExchange(cx, rx))
 	fmt.Println(gnightBob(cx, rx))
-}
-
-func newHam() *Ham {
-	ham := Ham{
-		Callsign: getRandomCallsign(),
-		Location: getRandomCity(),
-		Name:     "JANE",
-	}
-	return &ham
 }
 
 func initialGreeting(caller, receiver *Ham) string {
@@ -66,27 +57,28 @@ func firstExchange(caller, receiver *Ham) string {
 	msg = msg + qth(caller.Location) + " "
 	msg = msg + name(caller.Name) + " "
 	msg = msg + "HW CPY? "
-	msg = msg + kn(receiver.Callsign, caller.Callsign)
+	msg = msg + kn(caller.Callsign, receiver.Callsign)
 	return msg
 }
 
 func secondExchange(caller, receiver *Ham) string {
-	msg := de(receiver.Callsign, caller.Callsign) + " "
+	msg := de(caller.Callsign, receiver.Callsign) + " "
 	msg = msg + "TNX FOR RPT SLD CPY FB UR RST 599 599 BT" + " "
 	msg = msg + name(receiver.Name) + " "
 	msg = msg + qth(receiver.Location) + " "
-	msg = msg + kn(receiver.Callsign, caller.Callsign)
+	msg = msg + kn(caller.Callsign, receiver.Callsign)
 	return msg
 }
 
 func gnightBob(caller, receiver *Ham) string {
-	msg := de(caller.Callsign, receiver.Callsign) + " "
+	msg := de(receiver.Callsign, caller.Callsign) + " "
 	msg = msg + "TNX FER FB QSO " + receiver.Name + " "
 	msg = msg + "HP CU AGN BT VY 73 TO U ES URS SK" + " "
-	msg = msg + de(caller.Callsign, receiver.Callsign)
-	msg = de(caller.Callsign, receiver.Callsign) + " "
-	msg = msg + "TNX FER FB QSO " + receiver.Name + " "
-	msg = msg + "HP CU AGN BT VY 73 TO U ES URS SK" + " "
+	msg = msg + de(receiver.Callsign, caller.Callsign) + "\n"
+	// And now the reply
+	msg = msg + de(caller.Callsign, receiver.Callsign) + " "
+	msg = msg + "TNX FER QSO " + caller.Name + " "
+	msg = msg + "BCNU BT VY 73 TO U ES URS SK" + " "
 	msg = msg + de(caller.Callsign, receiver.Callsign)
 	return msg
 }
@@ -142,9 +134,9 @@ func readCities() *[]string {
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		city, country, subcountry, _ := strings.SplitN(scanner.Text(), ",", 4)
+		cityData := strings.SplitN(scanner.Text(), ",", 4)
 		// fmt.Printf("%+s\n", cs[0])
-		cities = append(cities, fmt.Sprintf("%s %s %s", city, country, subcountry))
+		cities = append(cities, fmt.Sprintf("%s %s %s", cityData[0], cityData[2], cityData[1]))
 	}
 	// fmt.Printf("%+s\n", callsigns)
 	return &cities
@@ -154,4 +146,13 @@ func readCities() *[]string {
 func getRandomCity() string {
 	cities := readCities()
 	return (*cities)[rand.Intn(len(*cities))]
+}
+
+func newHam() *Ham {
+	ham := Ham{
+		Callsign: getRandomCallsign(),
+		Location: getRandomCity(),
+		Name:     "JANE",
+	}
+	return &ham
 }
