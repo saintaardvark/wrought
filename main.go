@@ -3,11 +3,13 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"math/rand"
 	"os"
 	"strings"
 	"time"
 
+	"github.com/dbatbold/beep"
 	"github.com/martinlindhe/morse"
 )
 
@@ -37,11 +39,34 @@ func main() {
 	rand.Seed(time.Now().Unix())
 	cx := &me
 	rx := newHam()
+
+	if err := beep.OpenSoundDevice("default"); err != nil {
+		fmt.Printf("Can't open sound device: %s\n", err.Error())
+	}
+
+	if err := beep.InitSoundDevice(); err != nil {
+		fmt.Printf("Can't open sound device: %s\n", err.Error())
+	}
+	defer beep.CloseSoundDevice()
+	fmt.Println("[FIXME] About to beep")
+	doABeep()
+	fmt.Println("[FIXME] Did a beep")
 	fmt.Printf(initialGreeting(cx, rx))
 	// printMorse(initialGreeting(cx, rx))
 	fmt.Println(firstExchange(cx, rx))
 	fmt.Println(secondExchange(cx, rx))
 	fmt.Println(gnightBob(cx, rx))
+}
+
+func doABeep() {
+	freqHertz := 500.0
+	vol := 100
+	duration := 300 // ms
+	var foo string
+
+	freq := beep.HertzToFreq(freqHertz)
+	music := beep.NewMusic(foo)
+	playBeep(music, vol, duration, 1, freq)
 }
 
 func initialGreeting(caller, receiver *Ham) string {
@@ -155,4 +180,40 @@ func newHam() *Ham {
 		Name:     "JANE",
 	}
 	return &ham
+}
+
+// Taken from github.com/dbatbold/beep; 2-term BSD license
+// Thanks, dbatbold!
+func playBeep(music *beep.Music, volume, duration, count int, freq float64) {
+	bar := beep.SampleAmp16bit * (float64(volume) / 100.0)
+	samples := int(beep.SampleRate64 * (float64(duration) / 1000.0))
+	rest := 0
+	if count > 1 {
+		rest = (beep.SampleRate / 20) * 4 // 200ms
+	}
+	buf := make([]int16, samples+rest)
+	var last int16
+	var fade = 1024
+	if samples < fade {
+		fade = 1
+	}
+	for i := range buf {
+		if i < samples-fade {
+			buf[i] = int16(bar * math.Sin(float64(i)*freq))
+			last = buf[i]
+		} else {
+			if last > 0 {
+				last -= 31
+			} else {
+				last += 31
+			}
+			buf[i] = last
+		}
+	}
+	beep.InitSoundDevice()
+	for i := 0; i < count; i++ {
+		go music.Playback(buf, buf)
+		music.WaitLine()
+	}
+	beep.FlushSoundBuffer()
 }
