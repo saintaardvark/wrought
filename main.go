@@ -55,10 +55,25 @@ func main() {
 	dah()
 	fmt.Println("[FIXME] Did a beep")
 	fmt.Printf(initialGreeting(cx, rx))
+	playMorse("VA7UNX")
 	// printMorse(initialGreeting(cx, rx))
 	fmt.Println(firstExchange(cx, rx))
 	fmt.Println(secondExchange(cx, rx))
 	fmt.Println(gnightBob(cx, rx))
+}
+
+func playMorse(s string) {
+	stuff := morse.EncodeITU(s)
+	fmt.Println(stuff)
+	for _, letter := range strings.Split(stuff, "") {
+		fmt.Printf("%s\n", letter)
+		if letter == "-" {
+			dah()
+		} else {
+			dit()
+		}
+
+	}
 }
 
 func dit() {
