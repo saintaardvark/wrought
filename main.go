@@ -49,7 +49,10 @@ func main() {
 	}
 	defer beep.CloseSoundDevice()
 	fmt.Println("[FIXME] About to beep")
-	doABeep()
+	// doABeep()
+	dit()
+	time.Sleep(time.Duration(200 * time.Millisecond))
+	dah()
 	fmt.Println("[FIXME] Did a beep")
 	fmt.Printf(initialGreeting(cx, rx))
 	// printMorse(initialGreeting(cx, rx))
@@ -58,10 +61,17 @@ func main() {
 	fmt.Println(gnightBob(cx, rx))
 }
 
-func doABeep() {
+func dit() {
+	doABeep(150)
+}
+
+func dah() {
+	doABeep(300)
+}
+
+func doABeep(duration int) {
 	freqHertz := 500.0
-	vol := 100
-	duration := 300 // ms
+	vol := 80
 	var foo string
 
 	freq := beep.HertzToFreq(freqHertz)
