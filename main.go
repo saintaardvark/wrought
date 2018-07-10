@@ -48,12 +48,6 @@ func main() {
 		fmt.Printf("Can't open sound device: %s\n", err.Error())
 	}
 	defer beep.CloseSoundDevice()
-	fmt.Println("[FIXME] About to beep")
-	// doABeep()
-	dit()
-	time.Sleep(time.Duration(200 * time.Millisecond))
-	dah()
-	fmt.Println("[FIXME] Did a beep")
 	fmt.Printf(initialGreeting(cx, rx))
 	playMorse("VA7UNX")
 	// printMorse(initialGreeting(cx, rx))
