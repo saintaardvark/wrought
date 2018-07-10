@@ -61,13 +61,13 @@ func playMorse(s string) {
 	stuff := morse.EncodeITU(s)
 	fmt.Println(stuff)
 	for _, letter := range strings.Split(stuff, "") {
-		fmt.Printf("%s\n", letter)
 		if letter == "-" {
 			dah()
-		} else {
+		} else if letter == "." {
 			dit()
+		} else if letter == " " {
+			time.Sleep(time.Duration(200 * time.Millisecond))
 		}
-
 	}
 }
 
