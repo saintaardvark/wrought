@@ -52,6 +52,7 @@ func main() {
 	playMorse("VA7UNX")
 	// printMorse(initialGreeting(cx, rx))
 	fmt.Println(firstExchange(cx, rx))
+	playMorse(firstExchange(cx, rx))
 	fmt.Println(secondExchange(cx, rx))
 	fmt.Println(gnightBob(cx, rx))
 }
