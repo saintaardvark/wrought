@@ -59,7 +59,7 @@ func main() {
 
 func playMorse(s string) {
 	fmt.Println("[FIXME] About to encode " + s)
-	stuff := morse.EncodeITU(s)
+	stuff := morse.EncodeITU(strings.ToLower(s))
 	fmt.Println("[FIXME] " + stuff)
 	for _, letter := range strings.Split(stuff, "") {
 		if letter == "-" {
