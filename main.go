@@ -54,7 +54,9 @@ func main() {
 	fmt.Println(firstExchange(cx, rx))
 	playMorse(firstExchange(cx, rx))
 	fmt.Println(secondExchange(cx, rx))
+	playMorse(secondExchange(cx, rx))
 	fmt.Println(gnightBob(cx, rx))
+	playMorse(gnightBob(cx, rx))
 }
 
 func playMorse(s string) {
