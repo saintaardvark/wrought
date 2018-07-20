@@ -85,10 +85,10 @@ func dah() {
 func doABeep(duration int) {
 	freqHertz := 500.0
 	vol := 80
-	var foo string
 
 	freq := beep.HertzToFreq(freqHertz)
-	music := beep.NewMusic(foo)
+	// Just send empty string
+	music := beep.NewMusic("")
 	playBeep(music, vol, duration, 1, freq)
 }
 
