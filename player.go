@@ -10,8 +10,9 @@ import (
 )
 
 const (
-	ditLength = 150
-	dahLength = 300
+	ditLength   = 150
+	dahLength   = 300
+	letterPause = 3 * ditLength
 )
 
 type morsePlayer struct {
@@ -65,5 +66,10 @@ func (player *morsePlayer) buildDit() {
 
 func (player *morsePlayer) buildDah() {
 	newSamples := buildABeep(player.music, player.vol, dahLength, 1, player.freqHertz)
+	player.samples = append(player.samples, newSamples)
+}
+
+func (player *morsePlayer) buildPauseBetweenLetters() {
+	newSamples := buildABeep(player.music, 0, letterPause, 1, 0.0)
 	player.samples = append(player.samples, newSamples)
 }
