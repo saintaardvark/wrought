@@ -45,7 +45,17 @@ func (player *morsePlayer) PrintText() {
 		fmt.Println(s)
 	}
 }
+
 func (player *morsePlayer) PlayCW() {
+	player.buildCWSamplesCW()
+	// for _, sample := range player.samples {
+	// 	fmt.Println("[FIXME] Playing sample!")
+	// 	justPlayBeep(player.music, sample)
+	// }
+	fmt.Printf("[FIXME] Length of samples: %d\n", len(player.samples))
+}
+
+func (player *morsePlayer) buildCWSamplesCW() {
 	for _, s := range player.exchange {
 		for _, letter := range strings.Split(s, "") {
 			if letter == "-" {
@@ -53,9 +63,11 @@ func (player *morsePlayer) PlayCW() {
 			} else if letter == "." {
 				player.buildDit()
 			} else if letter == " " {
-				time.Sleep(time.Duration(200 * time.Millisecond))
+				// time.Sleep(time.Duration(200 * time.Millisecond))
+				player.buildPauseBetweenLetters()
 			}
 		}
+		time.Sleep(time.Duration(3 * time.Second))
 	}
 }
 

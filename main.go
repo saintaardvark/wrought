@@ -57,6 +57,8 @@ func main() {
 	// playMorse(gnightBob(cx, rx))
 	player.PrintCW()
 	player.PrintText()
+	player.PlayCW()
+
 }
 
 func playMorse(s string) {
