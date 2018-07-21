@@ -1,2 +1,5 @@
-run:
-	go run ./main.go
+run: wrought
+	./wrought
+
+wrought: *.go
+	go build .
