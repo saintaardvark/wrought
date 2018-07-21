@@ -74,24 +74,6 @@ func playMorse(s string) {
 	}
 }
 
-func dit() {
-	doABeep(150)
-}
-
-func dah() {
-	doABeep(300)
-}
-
-func doABeep(duration int) {
-	freqHertz := 500.0
-	vol := 80
-
-	freq := beep.HertzToFreq(freqHertz)
-	// Just send empty string
-	music := beep.NewMusic("")
-	playBeep(music, vol, duration, 1, freq)
-}
-
 func initialGreeting(caller, receiver *Ham) string {
 	callerRepeat := fmt.Sprintf("%s %s %s", caller.Callsign, caller.Callsign, caller.Callsign)
 	receiverRepeat := fmt.Sprintf("%s %s %s", receiver.Callsign, receiver.Callsign, receiver.Callsign)
@@ -203,6 +185,24 @@ func newHam() *Ham {
 		Name:     "JANE",
 	}
 	return &ham
+}
+
+func doABeep(duration int) {
+	freqHertz := 500.0
+	vol := 80
+
+	freq := beep.HertzToFreq(freqHertz)
+	// Just send empty string
+	music := beep.NewMusic("")
+	playBeep(music, vol, duration, 1, freq)
+}
+
+func dit() {
+	doABeep(150)
+}
+
+func dah() {
+	doABeep(300)
 }
 
 // Taken from github.com/dbatbold/beep; 2-term BSD license
