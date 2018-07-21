@@ -9,11 +9,17 @@ import (
 	"github.com/martinlindhe/morse"
 )
 
+const (
+	ditLength = 150
+	dahLength = 300
+)
+
 type morsePlayer struct {
 	music     *beep.Music
 	exchange  []string
 	freqHertz float64
 	vol       int
+	samples   []*[]int16
 }
 
 func newMorsePlayer() *morsePlayer {
@@ -22,6 +28,7 @@ func newMorsePlayer() *morsePlayer {
 		exchange:  []string{},
 		freqHertz: 500,
 		vol:       80,
+		samples:   []*[]int16{},
 	}
 	return &player
 }
@@ -47,15 +54,16 @@ func (player *morsePlayer) PlayCW() {
 			} else if letter == " " {
 				time.Sleep(time.Duration(200 * time.Millisecond))
 			}
-
 		}
 	}
 }
 
-func (player *morsePlayer) buildDit() *[]int16 {
-	return buildABeep(player.music, player.vol, 150, 1, player.freqHertz)
+func (player *morsePlayer) buildDit() {
+	newSamples := buildABeep(player.music, player.vol, ditLength, 1, player.freqHertz)
+	player.samples = append(player.samples, newSamples)
 }
 
-func (player *morsePlayer) buildDah() *[]int16 {
-	return buildABeep(player.music, player.vol, 300, 1, player.freqHertz)
+func (player *morsePlayer) buildDah() {
+	newSamples := buildABeep(player.music, player.vol, dahLength, 1, player.freqHertz)
+	player.samples = append(player.samples, newSamples)
 }
