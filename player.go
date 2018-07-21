@@ -9,14 +9,18 @@ import (
 )
 
 type morsePlayer struct {
-	music    *beep.Music
-	exchange []string
+	music     *beep.Music
+	exchange  []string
+	freqHertz float64
+	vol       int
 }
 
 func newMorsePlayer() *morsePlayer {
 	player := morsePlayer{
-		music:    beep.NewMusic(""),
-		exchange: []string{},
+		music:     beep.NewMusic(""),
+		exchange:  []string{},
+		freqHertz: 500,
+		vol:       80,
 	}
 	return &player
 }
