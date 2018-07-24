@@ -50,12 +50,16 @@ func (player *morsePlayer) PrintText() {
 }
 
 func (player *morsePlayer) PlayCW() {
+	player.Print()
 	player.buildCWSamplesCW()
-	// for _, sample := range player.samples {
-	// 	fmt.Println("[FIXME] Playing sample!")
-	// 	justPlayBeep(player.music, sample)
-	// }
+	player.Print()
 	fmt.Printf("[FIXME] Length of samples: %d\n", len(player.samples))
+	for _, sample := range player.samples {
+		player.Print()
+		fmt.Printf("[FIXME] Playing sample of length %d\n", len(*sample))
+		justPlayBeep(player.music, sample)
+	}
+
 }
 
 func (player *morsePlayer) buildCWSamplesCW() {
@@ -69,21 +73,33 @@ func (player *morsePlayer) buildCWSamplesCW() {
 				// time.Sleep(time.Duration(200 * time.Millisecond))
 				player.buildPauseBetweenLetters()
 			}
+	fmt.Printf("[FIXME] buildCWSamples: ")
+	player.Print()
+	fmt.Printf("\n")
 		}
 	}
 }
 
 func (player *morsePlayer) buildDit() {
+	fmt.Printf("[FIXME] buildDit: ")
+	player.Print()
+	fmt.Printf("\n")
 	newSamples := buildABeep(player.music, player.vol, ditLength, 1, player.freqHertz)
 	player.samples = append(player.samples, newSamples)
 }
 
 func (player *morsePlayer) buildDah() {
+	fmt.Printf("[FIXME] buildDah: ")
+	player.Print()
+	fmt.Printf("\n")
 	newSamples := buildABeep(player.music, player.vol, dahLength, 1, player.freqHertz)
 	player.samples = append(player.samples, newSamples)
 }
 
 func (player *morsePlayer) buildPauseBetweenLetters() {
+	fmt.Printf("[FIXME] buildPause: ")
+	player.Print()
+	fmt.Printf("\n")
 	newSamples := buildABeep(player.music, 0, letterPause, 1, 0.0)
 	player.samples = append(player.samples, newSamples)
 }
