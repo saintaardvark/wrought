@@ -34,6 +34,10 @@ func newMorsePlayer() *morsePlayer {
 	return &player
 }
 
+func (player *morsePlayer) Print() {
+	fmt.Printf("Player: freq: %f, vol: %d\n", player.freqHertz, player.vol)
+}
+
 func (player *morsePlayer) PrintCW() {
 	for _, s := range player.exchange {
 		fmt.Println(morse.EncodeITU(strings.ToLower(s)))
