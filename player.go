@@ -43,6 +43,14 @@ func (player *morsePlayer) PrintCW() {
 	}
 }
 
+func (player *morsePlayer) CW() string {
+	var cw string
+	for _, s := range player.exchange {
+		cw = fmt.Sprintf("%s\n%s", cw, morse.EncodeITU(strings.ToLower(s)))
+	}
+	return cw
+}
+
 func (player *morsePlayer) PrintText() {
 	for _, s := range player.exchange {
 		fmt.Println(s)
@@ -63,19 +71,21 @@ func (player *morsePlayer) PlayCW() {
 }
 
 func (player *morsePlayer) buildCWSamplesCW() {
-	for _, s := range player.exchange {
-		for _, letter := range strings.Split(s, "") {
-			if letter == "-" {
-				player.buildDah()
-			} else if letter == "." {
-				player.buildDit()
-			} else if letter == " " {
-				// time.Sleep(time.Duration(200 * time.Millisecond))
-				player.buildPauseBetweenLetters()
-			}
 	fmt.Printf("[FIXME] buildCWSamples: ")
 	player.Print()
 	fmt.Printf("\n")
+	//	(morse.EncodeITU(strings.ToLower(s))) // arghhh, was not encoding!
+	cw := player.CW()
+	//	for _, s := range cw() {
+	for _, s := range strings.Split(cw, "") {
+		fmt.Printf("[FIXME] buildCWSamples: S: %s\n", s)
+		if s == "-" {
+			player.buildDah()
+		} else if s == "." {
+			player.buildDit()
+		} else if s == " " {
+			// time.Sleep(time.Duration(200 * time.Millisecond))
+			player.buildPauseBetweenLetters()
 		}
 	}
 }
