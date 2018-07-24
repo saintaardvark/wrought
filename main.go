@@ -50,6 +50,7 @@ func main() {
 	defer beep.CloseSoundDevice()
 	playMorse("VA7UNX")
 	player.exchange = append(player.exchange, initialGreeting(cx, rx))
+	playMorse(player.exchange[0])
 	// player.exchange = append(player.exchange, firstExchange(cx, rx))
 	// player.exchange = append(player.exchange, gnightBob(cx, rx))
 	// // printMorse(initialGreeting(cx, rx))
