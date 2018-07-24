@@ -39,6 +39,7 @@ func main() {
 	cx := &me
 	rx := newHam()
 	player := newMorsePlayer()
+	player.Print()
 	if err := beep.OpenSoundDevice("default"); err != nil {
 		fmt.Printf("Can't open sound device: %s\n", err.Error())
 	}
@@ -49,14 +50,14 @@ func main() {
 	defer beep.CloseSoundDevice()
 	playMorse("VA7UNX")
 	player.exchange = append(player.exchange, initialGreeting(cx, rx))
-	player.exchange = append(player.exchange, firstExchange(cx, rx))
-	player.exchange = append(player.exchange, gnightBob(cx, rx))
-	// printMorse(initialGreeting(cx, rx))
-	// playMorse(firstExchange(cx, rx))
-	// playMorse(secondExchange(cx, rx))
-	// playMorse(gnightBob(cx, rx))
-	player.PrintCW()
-	player.PrintText()
+	// player.exchange = append(player.exchange, firstExchange(cx, rx))
+	// player.exchange = append(player.exchange, gnightBob(cx, rx))
+	// // printMorse(initialGreeting(cx, rx))
+	// // playMorse(firstExchange(cx, rx))
+	// // playMorse(secondExchange(cx, rx))
+	// // playMorse(gnightBob(cx, rx))
+	// player.PrintCW()
+	// player.PrintText()
 	player.PlayCW()
 
 }
