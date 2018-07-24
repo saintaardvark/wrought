@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/dbatbold/beep"
 	"github.com/martinlindhe/morse"
@@ -71,7 +70,6 @@ func (player *morsePlayer) buildCWSamplesCW() {
 				player.buildPauseBetweenLetters()
 			}
 		}
-		time.Sleep(time.Duration(3 * time.Second))
 	}
 }
 
