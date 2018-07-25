@@ -96,7 +96,7 @@ func (player *morsePlayer) buildDit() {
 	fmt.Printf("[FIXME] buildDit: ")
 	player.Print()
 	fmt.Printf("\n")
-	newSamples := buildABeep(player.music, player.vol, ditLength, 1, player.freqHertz)
+	newSamples := buildABeep(player.vol, ditLength, 1, player.freqHertz)
 	player.samples = append(player.samples, newSamples)
 }
 
@@ -104,7 +104,7 @@ func (player *morsePlayer) buildDah() {
 	fmt.Printf("[FIXME] buildDah: ")
 	player.Print()
 	fmt.Printf("\n")
-	newSamples := buildABeep(player.music, player.vol, dahLength, 1, player.freqHertz)
+	newSamples := buildABeep(player.vol, dahLength, 1, player.freqHertz)
 	player.samples = append(player.samples, newSamples)
 }
 
@@ -112,6 +112,6 @@ func (player *morsePlayer) buildPauseBetweenLetters() {
 	fmt.Printf("[FIXME] buildPause: ")
 	player.Print()
 	fmt.Printf("\n")
-	newSamples := buildABeep(player.music, 0, letterPause, 1, 0.0)
+	newSamples := buildABeep(0, letterPause, 1, 0.0)
 	player.samples = append(player.samples, newSamples)
 }

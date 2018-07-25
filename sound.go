@@ -62,7 +62,7 @@ func playBeep(music *beep.Music, volume, duration, count int, freq float64) {
 	beep.FlushSoundBuffer()
 }
 
-func buildABeep(music *beep.Music, volume, duration, count int, freq float64) *[]int16 {
+func buildABeep(volume, duration, count int, freq float64) *[]int16 {
 	fmt.Printf("[FIXME] buildABeep: vol: %d\n", volume)
 	fmt.Printf("[FIXME] buildABeep: duration: %d\n", duration)
 	fmt.Printf("[FIXME] buildABeep: freq: %f\n", freq)
