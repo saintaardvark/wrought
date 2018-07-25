@@ -98,6 +98,8 @@ func buildABeep(music *beep.Music, volume, duration, count int, freq float64) *[
 func justPlayBeep(music *beep.Music, buf *[]int16) {
 	fmt.Println("[FIXME] Made it to justPlayBeep")
 	// fmt.Printf("[FIXME] *buf: %+v\n", *buf)
+	// assigning buf directly does not affect anything
+	// buf2 := *buf
 	beep.InitSoundDevice()
 	go music.Playback(*buf, *buf)
 	music.WaitLine()

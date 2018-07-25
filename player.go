@@ -65,6 +65,8 @@ func (player *morsePlayer) PlayCW() {
 	for _, sample := range player.samples {
 		player.Print()
 		fmt.Printf("[FIXME] Playing sample of length %d\n", len(*sample))
+		// THis does not make a difference:
+		// justPlayBeep(beep.NewMusic(""), sample)
 		justPlayBeep(player.music, sample)
 	}
 
