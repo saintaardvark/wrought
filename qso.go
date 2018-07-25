@@ -6,6 +6,12 @@ import (
 	"wrought/ham"
 )
 
+const (
+	tnxBob = "TNX FOR CALL BT UR RST 599 599 HR"
+	sldCpy = "TNX FOR RPT SLD CPY FB UR RST 599 599 BT"
+	hwCpy  = "HW CPY?"
+)
+
 func initialGreeting(caller, receiver *ham.Ham) string {
 	callerRepeat := fmt.Sprintf("%s %s %s", caller.Callsign, caller.Callsign, caller.Callsign)
 	receiverRepeat := fmt.Sprintf("%s %s %s", receiver.Callsign, receiver.Callsign, receiver.Callsign)
@@ -14,35 +20,45 @@ func initialGreeting(caller, receiver *ham.Ham) string {
 }
 
 func firstExchange(caller, receiver *ham.Ham) string {
-	msg := de(receiver.Callsign, caller.Callsign) + " "
-	msg = msg + "TNX FOR CALL BT UR RST 599 599 HR "
-	msg = msg + qth(caller.Location) + " "
-	msg = msg + name(caller.Name) + " "
-	msg = msg + "HW CPY? "
-	msg = msg + kn(caller.Callsign, receiver.Callsign)
-	return msg
+	return fmt.Sprintf("%s %s %s %s %s %s",
+		de(receiver.Callsign, caller.Callsign),
+		tnxBob,
+		qth(caller.Location),
+		name(caller.Name),
+		hwCpy,
+		kn(caller.Callsign, receiver.Callsign))
 }
 
 func secondExchange(caller, receiver *ham.Ham) string {
-	msg := de(caller.Callsign, receiver.Callsign) + " "
-	msg = msg + "TNX FOR RPT SLD CPY FB UR RST 599 599 BT" + " "
-	msg = msg + name(receiver.Name) + " "
-	msg = msg + qth(receiver.Location) + " "
-	msg = msg + kn(caller.Callsign, receiver.Callsign)
-	return msg
+	return fmt.Sprintf("%s %s %s %s %s",
+		de(caller.Callsign, receiver.Callsign),
+		sldCpy,
+		name(receiver.Name),
+		qth(receiver.Location),
+		kn(caller.Callsign, receiver.Callsign))
 }
 
 func gnightBob(caller, receiver *ham.Ham) string {
-	msg := de(receiver.Callsign, caller.Callsign) + " "
-	msg = msg + "TNX FER FB QSO " + receiver.Name + " "
-	msg = msg + "HP CU AGN BT VY 73 TO U ES URS SK" + " "
-	msg = msg + de(receiver.Callsign, caller.Callsign) + "\n"
-	// And now the reply
-	msg = msg + de(caller.Callsign, receiver.Callsign) + " "
-	msg = msg + "TNX FER QSO " + caller.Name + " "
-	msg = msg + "BCNU BT VY 73 TO U ES URS SK" + " "
-	msg = msg + de(caller.Callsign, receiver.Callsign)
+	msg := gnightBob1(caller, receiver)
+	msg += "\n" + gnightBob2(receiver, caller)
 	return msg
+}
+
+func gnightBob1(caller, receiver *ham.Ham) string {
+	return fmt.Sprintf("%s %s %s %s %s",
+		de(receiver.Callsign, caller.Callsign),
+		"TNX FER FB QSO",
+		receiver.Name,
+		"HP CU AGN BT VY 73 TO U ES URS SK",
+		de(receiver.Callsign, caller.Callsign))
+}
+
+func gnightBob2(caller, receiver *ham.Ham) string {
+	return fmt.Sprintf("%s %s %s %s",
+		de(caller.Callsign, receiver.Callsign),
+		"TNX FER QSO "+caller.Name,
+		"BCNU BT VY 73 TO U ES URS SK",
+		de(caller.Callsign, receiver.Callsign))
 }
 
 func name(name string) string {
