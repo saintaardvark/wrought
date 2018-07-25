@@ -26,7 +26,7 @@ func newMorsePlayer() *morsePlayer {
 	player := morsePlayer{
 		music:     beep.NewMusic(""),
 		exchange:  []string{},
-		freqHertz: 500,
+		freqHertz: beep.HertzToFreq(500),
 		vol:       80,
 		samples:   []*[]int16{},
 	}
