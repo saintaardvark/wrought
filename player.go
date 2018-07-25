@@ -12,6 +12,8 @@ const (
 	ditLength   = 150
 	dahLength   = 300
 	letterPause = 3 * ditLength
+	freq        = 500
+	volume      = 80
 )
 
 type morsePlayer struct {
@@ -26,8 +28,8 @@ func newMorsePlayer() *morsePlayer {
 	player := morsePlayer{
 		music:     beep.NewMusic(""),
 		exchange:  []string{},
-		freqHertz: beep.HertzToFreq(500),
-		vol:       80,
+		freqHertz: beep.HertzToFreq(freq),
+		vol:       volume,
 		samples:   []*[]int16{},
 	}
 	return &player
