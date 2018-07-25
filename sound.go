@@ -7,13 +7,9 @@ import (
 )
 
 func doABeep(duration int) {
-	freqHertz := 500.0
-	vol := 80
-
-	freq := beep.HertzToFreq(freqHertz)
 	// Just send empty string
 	music := beep.NewMusic("")
-	playBeep(music, vol, duration, 1, freq)
+	playBeep(music, volume, duration, 1, beep.HertzToFreq(freq))
 }
 
 func dit() {
