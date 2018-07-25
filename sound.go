@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math"
 
 	"github.com/dbatbold/beep"
@@ -53,8 +52,6 @@ func playBeep(music *beep.Music, volume, duration, count int, freq float64) {
 	// 		buf[i] = last
 	// 	}
 	// }
-	// fmt.Printf("[FIXME] buf: %+v\n", buf)
-	// Huh, this works:  buf := and justPlayBeep. WTF?
 	buf := buildABeep(volume, duration, count, freq)
 	justPlayBeep(music, buf)
 	// beep.InitSoundDevice()
@@ -66,9 +63,6 @@ func playBeep(music *beep.Music, volume, duration, count int, freq float64) {
 }
 
 func buildABeep(volume, duration, count int, freq float64) *[]int16 {
-	fmt.Printf("[FIXME] buildABeep: vol: %d\n", volume)
-	fmt.Printf("[FIXME] buildABeep: duration: %d\n", duration)
-	fmt.Printf("[FIXME] buildABeep: freq: %f\n", freq)
 	bar := beep.SampleAmp16bit * (float64(volume) / 100.0)
 	samples := int(beep.SampleRate64 * (float64(duration) / 1000.0))
 	rest := 0
@@ -94,15 +88,10 @@ func buildABeep(volume, duration, count int, freq float64) *[]int16 {
 			buf[i] = last
 		}
 	}
-	// fmt.Printf("[FIXME] buildABeep: buf: %+v\n", buf)
 	return &buf
 }
 
 func justPlayBeep(music *beep.Music, buf *[]int16) {
-	fmt.Println("[FIXME] Made it to justPlayBeep")
-	// fmt.Printf("[FIXME] *buf: %+v\n", *buf)
-	// assigning buf directly does not affect anything
-	// buf2 := *buf
 	beep.InitSoundDevice()
 	go music.Playback(*buf, *buf)
 	music.WaitLine()

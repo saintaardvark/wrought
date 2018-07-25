@@ -58,29 +58,17 @@ func (player *morsePlayer) PrintText() {
 }
 
 func (player *morsePlayer) PlayCW() {
-	player.Print()
 	player.buildCWSamplesCW()
-	player.Print()
-	fmt.Printf("[FIXME] Length of samples: %d\n", len(player.samples))
 	for _, sample := range player.samples {
-		player.Print()
-		fmt.Printf("[FIXME] Playing sample of length %d\n", len(*sample))
-		// THis does not make a difference:
-		// justPlayBeep(beep.NewMusic(""), sample)
 		justPlayBeep(player.music, sample)
 	}
-
 }
 
 func (player *morsePlayer) buildCWSamplesCW() {
-	fmt.Printf("[FIXME] buildCWSamples: ")
-	player.Print()
-	fmt.Printf("\n")
 	//	(morse.EncodeITU(strings.ToLower(s))) // arghhh, was not encoding!
 	cw := player.CW()
 	//	for _, s := range cw() {
 	for _, s := range strings.Split(cw, "") {
-		fmt.Printf("[FIXME] buildCWSamples: S: %s\n", s)
 		if s == "-" {
 			player.buildDah()
 		} else if s == "." {
@@ -93,25 +81,16 @@ func (player *morsePlayer) buildCWSamplesCW() {
 }
 
 func (player *morsePlayer) buildDit() {
-	fmt.Printf("[FIXME] buildDit: ")
-	player.Print()
-	fmt.Printf("\n")
 	newSamples := buildABeep(player.vol, ditLength, 1, player.freqHertz)
 	player.samples = append(player.samples, newSamples)
 }
 
 func (player *morsePlayer) buildDah() {
-	fmt.Printf("[FIXME] buildDah: ")
-	player.Print()
-	fmt.Printf("\n")
 	newSamples := buildABeep(player.vol, dahLength, 1, player.freqHertz)
 	player.samples = append(player.samples, newSamples)
 }
 
 func (player *morsePlayer) buildPauseBetweenLetters() {
-	fmt.Printf("[FIXME] buildPause: ")
-	player.Print()
-	fmt.Printf("\n")
 	newSamples := buildABeep(0, letterPause, 1, 0.0)
 	player.samples = append(player.samples, newSamples)
 }

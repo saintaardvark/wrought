@@ -50,25 +50,20 @@ func main() {
 	defer beep.CloseSoundDevice()
 	playMorse("CQ")
 	player.exchange = append(player.exchange, initialGreeting(cx, rx))
-	// this works...why?
-	// playMorse(player.exchange[0])
-
-	// player.exchange = append(player.exchange, firstExchange(cx, rx))
-	// player.exchange = append(player.exchange, gnightBob(cx, rx))
-	// // printMorse(initialGreeting(cx, rx))
-	// // playMorse(firstExchange(cx, rx))
-	// // playMorse(secondExchange(cx, rx))
-	// // playMorse(gnightBob(cx, rx))
-	// player.PrintCW()
-	// player.PrintText()
+	player.exchange = append(player.exchange, firstExchange(cx, rx))
+	player.exchange = append(player.exchange, gnightBob(cx, rx))
+	// printMorse(initialGreeting(cx, rx))
+	// playMorse(firstExchange(cx, rx))
+	// playMorse(secondExchange(cx, rx))
+	// playMorse(gnightBob(cx, rx))
+	player.PrintCW()
+	player.PrintText()
 	player.PlayCW()
 
 }
 
 func playMorse(s string) {
-	fmt.Println("[FIXME] About to encode " + s)
 	cw := morse.EncodeITU(strings.ToLower(s))
-	fmt.Println("[FIXME] " + cw)
 	for _, letter := range strings.Split(cw, "") {
 		if letter == "-" {
 			dah()
