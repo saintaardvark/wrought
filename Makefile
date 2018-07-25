@@ -1,5 +1,5 @@
 run: wrought
 	./wrought
 
-wrought: *.go
+wrought: *.go */*.go
 	go build .

@@ -1,12 +1,12 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"math/rand"
-	"os"
 	"strings"
 	"time"
+
+	"wrought/ham"
 
 	"github.com/dbatbold/beep"
 	"github.com/martinlindhe/morse"
@@ -17,17 +17,8 @@ import (
 // List of countries, states, cities
 // List of phrases
 
-// Ham is a ham
-type Ham struct {
-	Callsign string
-	Location string
-	Name     string
-}
-
 var (
-	callsignFile = "/home/aardvark/.qrq/toplist"
-	citiesFile   = "./data/world-cities/data/world-cities.csv"
-	me           = Ham{
+	me = ham.Ham{
 		Callsign: "VA7UNX",
 		Location: "NEW WESTMINSTER BC CANADA",
 		Name:     "HUGH",
@@ -37,7 +28,7 @@ var (
 func main() {
 	rand.Seed(time.Now().Unix())
 	cx := &me
-	rx := newHam()
+	rx := ham.NewHam()
 	player := newMorsePlayer()
 	player.Print()
 	if err := beep.OpenSoundDevice("default"); err != nil {
@@ -75,14 +66,14 @@ func playMorse(s string) {
 	}
 }
 
-func initialGreeting(caller, receiver *Ham) string {
+func initialGreeting(caller, receiver *ham.Ham) string {
 	callerRepeat := fmt.Sprintf("%s %s %s", caller.Callsign, caller.Callsign, caller.Callsign)
 	receiverRepeat := fmt.Sprintf("%s %s %s", receiver.Callsign, receiver.Callsign, receiver.Callsign)
 	msg := fmt.Sprintf("CQ CQ CQ DE %s K\n%s DE %s KN\n", callerRepeat, caller.Callsign, receiverRepeat)
 	return msg
 }
 
-func firstExchange(caller, receiver *Ham) string {
+func firstExchange(caller, receiver *ham.Ham) string {
 	msg := de(receiver.Callsign, caller.Callsign) + " "
 	msg = msg + "TNX FOR CALL BT UR RST 599 599 HR "
 	msg = msg + qth(caller.Location) + " "
@@ -92,7 +83,7 @@ func firstExchange(caller, receiver *Ham) string {
 	return msg
 }
 
-func secondExchange(caller, receiver *Ham) string {
+func secondExchange(caller, receiver *ham.Ham) string {
 	msg := de(caller.Callsign, receiver.Callsign) + " "
 	msg = msg + "TNX FOR RPT SLD CPY FB UR RST 599 599 BT" + " "
 	msg = msg + name(receiver.Name) + " "
@@ -101,7 +92,7 @@ func secondExchange(caller, receiver *Ham) string {
 	return msg
 }
 
-func gnightBob(caller, receiver *Ham) string {
+func gnightBob(caller, receiver *ham.Ham) string {
 	msg := de(receiver.Callsign, caller.Callsign) + " "
 	msg = msg + "TNX FER FB QSO " + receiver.Name + " "
 	msg = msg + "HP CU AGN BT VY 73 TO U ES URS SK" + " "
@@ -132,58 +123,4 @@ func kn(cx, rx string) string {
 
 func printMorse(msg string) {
 	fmt.Println(morse.EncodeITU(msg))
-}
-
-func readCallsigns() *[]string {
-	var callsigns []string
-	file, err := os.Open(callsignFile)
-	if err != nil {
-		fmt.Printf("Can't read %s: %s", callsignFile, err)
-	}
-	defer file.Close()
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		cs := strings.SplitN(scanner.Text(), " ", 2)
-		// fmt.Printf("%+s\n", cs[0])
-		callsigns = append(callsigns, cs[0])
-	}
-	// fmt.Printf("%+s\n", callsigns)
-	return &callsigns
-}
-
-func getRandomCallsign() string {
-	cs := readCallsigns()
-	return (*cs)[rand.Intn(len(*cs))]
-}
-
-func readCities() *[]string {
-	var cities []string
-	file, err := os.Open(citiesFile)
-	if err != nil {
-		fmt.Printf("Can't read %s: %s", citiesFile, err)
-	}
-	defer file.Close()
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		cityData := strings.SplitN(scanner.Text(), ",", 4)
-		// fmt.Printf("%+s\n", cs[0])
-		cities = append(cities, fmt.Sprintf("%s %s %s", cityData[0], cityData[2], cityData[1]))
-	}
-	// fmt.Printf("%+s\n", callsigns)
-	return &cities
-
-}
-
-func getRandomCity() string {
-	cities := readCities()
-	return (*cities)[rand.Intn(len(*cities))]
-}
-
-func newHam() *Ham {
-	ham := Ham{
-		Callsign: getRandomCallsign(),
-		Location: getRandomCity(),
-		Name:     "JANE",
-	}
-	return &ham
 }
