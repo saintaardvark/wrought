@@ -41,9 +41,10 @@ func main() {
 	playMorse("CQ")
 	player.exchange = append(player.exchange, initialGreeting(cx, rx))
 	player.exchange = append(player.exchange, firstExchange(cx, rx))
+	player.exchange = append(player.exchange, secondExchange(cx, rx))
 	player.exchange = append(player.exchange, gnightBob(cx, rx))
 	player.PlayCW()
-	player.PrintCW()
+	// player.PrintCW()
 	player.PrintText()
 }
 

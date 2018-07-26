@@ -12,6 +12,7 @@ const (
 	ditLength   = 150
 	dahLength   = 300
 	letterPause = 3 * ditLength
+	wordPause   = 7 * ditLength
 	freq        = 500
 	volume      = 80
 )
@@ -78,6 +79,16 @@ func (player *morsePlayer) buildCWSamplesCW() {
 		} else if s == " " {
 			// time.Sleep(time.Duration(200 * time.Millisecond))
 			player.buildPauseBetweenLetters()
+		}
+	}
+}
+
+func (player *morsePlayer) buildProsign(prosign string) {
+	for _, s := range strings.Split(prosign, "") {
+		if s == "-" {
+			player.buildDah()
+		} else if s == "." {
+			player.buildDit()
 		}
 	}
 }
