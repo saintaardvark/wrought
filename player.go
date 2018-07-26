@@ -17,6 +17,12 @@ const (
 	volume      = 80
 )
 
+var (
+	prosigns = map[string]bool{
+		"CQ": true,
+	}
+)
+
 type morsePlayer struct {
 	music     *beep.Music
 	exchange  []string
@@ -71,14 +77,27 @@ func (player *morsePlayer) buildCWSamplesCW() {
 	//	(morse.EncodeITU(strings.ToLower(s))) // arghhh, was not encoding!
 	cw := player.CW()
 	//	for _, s := range cw() {
-	for _, s := range strings.Split(cw, "") {
+	// FIXME: Trying to detect prosign *after* CW has been encoded...
+	for _, word := range strings.Split(cw, " ") {
+		fmt.Printf("[FIXME] Building %s\n", word)
+		if prosigns[word] == true {
+			player.buildProsign(word)
+		} else {
+			player.buildWord(word)
+		}
+		player.buildPause(false)
+	}
+}
+
+func (player *morsePlayer) buildWord(word string) {
+	for _, s := range strings.Split(word, "") {
 		if s == "-" {
 			player.buildDah()
 		} else if s == "." {
 			player.buildDit()
 		} else if s == " " {
 			// time.Sleep(time.Duration(200 * time.Millisecond))
-			player.buildPauseBetweenLetters()
+			player.buildPause(false)
 		}
 	}
 }
@@ -103,7 +122,12 @@ func (player *morsePlayer) buildDah() {
 	player.samples = append(player.samples, newSamples)
 }
 
-func (player *morsePlayer) buildPauseBetweenLetters() {
-	newSamples := buildABeep(0, letterPause, 1, 0.0)
+func (player *morsePlayer) buildPause(word bool) {
+	var newSamples *[]int16
+	if word == true {
+		newSamples = buildABeep(0, wordPause, 1, 0.0)
+	} else {
+		newSamples = buildABeep(0, letterPause, 1, 0.0)
+	}
 	player.samples = append(player.samples, newSamples)
 }
