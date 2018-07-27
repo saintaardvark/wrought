@@ -21,6 +21,7 @@ const (
 var (
 	prosigns = map[string]bool{
 		"CQ": true,
+		"KN": true,
 	}
 )
 
