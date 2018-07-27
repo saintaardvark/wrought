@@ -123,12 +123,20 @@ func (player *morsePlayer) buildDah() {
 	player.samples = append(player.samples, newSamples)
 }
 
-func (player *morsePlayer) buildPause(word bool) {
+func (player *morsePlayer) buildWordPause() {
+	player.buildPause(wordPause)
+}
+
+func (player *morsePlayer) buildSentencePause() {
+	player.buildPause(sentencePause)
+}
+
+func (player *morsePlayer) buildLetterPause() {
+	player.buildPause(letterPause)
+}
+
+func (player *morsePlayer) buildPause(pause int) {
 	var newSamples *[]int16
-	if word == true {
-		newSamples = buildABeep(0, wordPause, 1, 0.0)
-	} else {
-		newSamples = buildABeep(0, letterPause, 1, 0.0)
-	}
+	newSamples = buildABeep(0, pause, 1, 0.0)
 	player.samples = append(player.samples, newSamples)
 }
