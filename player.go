@@ -9,12 +9,13 @@ import (
 )
 
 const (
-	ditLength   = 150
-	dahLength   = 300
-	letterPause = 3 * ditLength
-	wordPause   = 7 * ditLength
-	freq        = 500
-	volume      = 80
+	ditLength     = 150
+	dahLength     = 300
+	letterPause   = 3 * ditLength
+	wordPause     = 7 * ditLength
+	sentencePause = 10 * ditLength
+	freq          = 500
+	volume        = 80
 )
 
 var (
