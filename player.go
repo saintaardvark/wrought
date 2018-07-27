@@ -71,6 +71,7 @@ func (player *morsePlayer) PrintText() {
 func (player *morsePlayer) PlayCW() {
 	for _, exch := range player.exchange {
 		player.buildCWSamplesRecursive(exch)
+		player.buildSentencePause()
 	}
 	for _, sample := range player.samples {
 		justPlayBeep(player.music, sample)
@@ -99,9 +100,11 @@ func (player *morsePlayer) buildWord(word string) {
 			player.buildDah()
 		} else if s == "." {
 			player.buildDit()
+		} else {
+			player.buildLetterPause()
 		}
-		player.buildLetterPause()
 	}
+	player.buildWordPause()
 }
 
 func (player *morsePlayer) buildProsign(prosign string) {
