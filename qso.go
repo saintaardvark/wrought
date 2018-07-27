@@ -26,7 +26,7 @@ func firstExchange(caller, receiver *ham.Ham) string {
 		qth(caller.Location),
 		name(caller.Name),
 		hwCpy,
-		kn(caller.Callsign, receiver.Callsign))
+		kn(receiver.Callsign, caller.Callsign))
 }
 
 func secondExchange(caller, receiver *ham.Ham) string {
