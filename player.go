@@ -68,43 +68,44 @@ func (player *morsePlayer) PrintText() {
 }
 
 func (player *morsePlayer) PlayCW() {
-	player.buildCWSamplesCW()
+	for _, exch := range player.exchange {
+		player.buildCWSamplesRecursive(exch)
+	}
 	for _, sample := range player.samples {
 		justPlayBeep(player.music, sample)
 	}
 }
 
-func (player *morsePlayer) buildCWSamplesCW() {
-	//	(morse.EncodeITU(strings.ToLower(s))) // arghhh, was not encoding!
-	cw := player.CW()
-	//	for _, s := range cw() {
-	// FIXME: Trying to detect prosign *after* CW has been encoded...
-	for _, word := range strings.Split(cw, " ") {
-		fmt.Printf("[FIXME] Building %s\n", word)
-		if prosigns[word] == true {
-			player.buildProsign(word)
-		} else {
-			player.buildWord(word)
+// Rewrite this to be recursive
+func (player *morsePlayer) buildCWSamplesRecursive(s string) {
+	if strings.Contains(s, " ") {
+		for _, w := range strings.Split(s, " ") {
+			player.buildCWSamplesRecursive(w)
 		}
-		player.buildPause(false)
 	}
+	if prosigns[s] == true {
+		player.buildProsign(s)
+	} else {
+		player.buildWord(s)
+	}
+	player.buildWordPause()
 }
 
 func (player *morsePlayer) buildWord(word string) {
-	for _, s := range strings.Split(word, "") {
+	m := morse.EncodeITU(strings.ToLower(word))
+	for _, s := range strings.Split(m, "") {
 		if s == "-" {
 			player.buildDah()
 		} else if s == "." {
 			player.buildDit()
-		} else if s == " " {
-			// time.Sleep(time.Duration(200 * time.Millisecond))
-			player.buildPause(false)
 		}
+		player.buildLetterPause()
 	}
 }
 
 func (player *morsePlayer) buildProsign(prosign string) {
-	for _, s := range strings.Split(prosign, "") {
+	m := morse.EncodeITU(strings.ToLower(prosign))
+	for _, s := range strings.Split(m, "") {
 		if s == "-" {
 			player.buildDah()
 		} else if s == "." {
