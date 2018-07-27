@@ -38,7 +38,6 @@ func main() {
 		fmt.Printf("Can't open sound device: %s\n", err.Error())
 	}
 	defer beep.CloseSoundDevice()
-	playMorse("CQ")
 	player.exchange = append(player.exchange, initialGreeting(cx, rx))
 	player.exchange = append(player.exchange, firstExchange(cx, rx))
 	player.exchange = append(player.exchange, secondExchange(cx, rx))
