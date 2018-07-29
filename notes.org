@@ -2,5 +2,8 @@
   CLOSED: [2018-07-29 Sun 07:43]
 * TODO Allow for different beep lengths, pauses, etc
 * TODO cli switches
+  - speed
+  - spacing
 * TODO BT prosign
 * TODO fix kn recognition - strip newlines
+* TODO reorg packages a bit
