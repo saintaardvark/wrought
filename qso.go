@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-
 	"wrought/ham"
 )
 
@@ -55,10 +54,10 @@ func gnightBob1(caller, receiver *ham.Ham) string {
 
 func gnightBob2(caller, receiver *ham.Ham) string {
 	return fmt.Sprintf("%s %s %s %s",
-		de(caller.Callsign, receiver.Callsign),
-		"TNX FER QSO "+caller.Name,
+		de(receiver.Callsign, caller.Callsign),
+		"TNX FER QSO "+receiver.Name,
 		"BCNU BT VY 73 TO U ES URS SK",
-		de(caller.Callsign, receiver.Callsign))
+		de(receiver.Callsign, caller.Callsign))
 }
 
 func name(name string) string {
