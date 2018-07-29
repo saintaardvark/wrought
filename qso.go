@@ -60,6 +60,14 @@ func gnightBob2(caller, receiver *ham.Ham) string {
 		de(receiver.Callsign, caller.Callsign))
 }
 
+func buildQSO(caller, receiver *ham.Ham, player *morsePlayer) {
+	player.exchange = append(player.exchange, initialGreeting(caller, receiver))
+	player.exchange = append(player.exchange, firstExchange(caller, receiver))
+	player.exchange = append(player.exchange, secondExchange(caller, receiver))
+	player.exchange = append(player.exchange, gnightBob(caller, receiver))
+
+}
+
 func name(name string) string {
 	return fmt.Sprintf("NAME %s %s", name, name)
 }
