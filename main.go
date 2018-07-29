@@ -2,11 +2,14 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
+	"os"
 	"time"
 	"wrought/ham"
 
 	"github.com/dbatbold/beep"
+	"github.com/urfave/cli"
 )
 
 var (
@@ -22,6 +25,10 @@ func main() {
 	cx := &me
 	rx := ham.NewHam()
 	player := newMorsePlayer()
+	app := cli.NewApp()
+	app.Name = "wrought"
+	app.Usage = "CW trainer"
+
 	if err := beep.OpenSoundDevice("default"); err != nil {
 		fmt.Printf("Can't open sound device: %s\n", err.Error())
 	}
@@ -30,8 +37,28 @@ func main() {
 		fmt.Printf("Can't open sound device: %s\n", err.Error())
 	}
 	defer beep.CloseSoundDevice()
-	player.PrintText()
-	player.PlayCW()
-	// player.PrintCW()
+	buildQSO(cx, rx, player)
 
+	app.Commands = []cli.Command{
+		{
+			Name:  "play",
+			Usage: "play a qso",
+			Action: func(c *cli.Context) error {
+				player.PlayCW()
+				return nil
+			},
+		},
+		{
+			Name:  "print",
+			Usage: "print a qso",
+			Action: func(c *cli.Context) error {
+				player.PrintText()
+				return nil
+			},
+		},
+	}
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
