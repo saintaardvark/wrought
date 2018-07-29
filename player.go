@@ -84,6 +84,7 @@ func (player *morsePlayer) buildCWSamplesRecursive(s string) {
 		for _, w := range strings.Split(s, " ") {
 			player.buildCWSamplesRecursive(w)
 		}
+		return
 	}
 	if prosigns[s] == true {
 		player.buildProsign(s)
