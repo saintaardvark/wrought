@@ -8,6 +8,7 @@ import (
 	"time"
 	"wrought/ham"
 	"wrought/morsePlayer"
+	"wrought/qso"
 
 	"github.com/dbatbold/beep"
 	"github.com/urfave/cli"
@@ -38,7 +39,7 @@ func main() {
 		fmt.Printf("Can't open sound device: %s\n", err.Error())
 	}
 	defer beep.CloseSoundDevice()
-	buildQSO(cx, rx, player)
+	qso.BuildQSO(cx, rx, player)
 
 	app.Commands = []cli.Command{
 		{

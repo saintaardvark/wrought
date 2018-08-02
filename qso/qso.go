@@ -1,4 +1,4 @@
-package main
+package qso
 
 import (
 	"fmt"
@@ -73,7 +73,8 @@ func gnightBob2(caller, receiver *ham.Ham) string {
 		de(receiver.Callsign, caller.Callsign))
 }
 
-func buildQSO(caller, receiver *ham.Ham, player *morsePlayer.MorsePlayer) {
+// BuildQSO creates an exchange between two hams
+func BuildQSO(caller, receiver *ham.Ham, player *morsePlayer.MorsePlayer) {
 	player.Exchange = append(player.Exchange, initialGreeting(caller, receiver))
 	player.Exchange = append(player.Exchange, firstExchange(caller, receiver))
 	player.Exchange = append(player.Exchange, secondExchange(caller, receiver))
