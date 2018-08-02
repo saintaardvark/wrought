@@ -1,7 +1,8 @@
-package main
+package morsePlayer
 
 import (
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/dbatbold/beep"
@@ -12,7 +13,7 @@ const (
 	ditLength     = 150
 	dahLength     = 300
 	letterPause   = 3 * ditLength
-	wordPause     = 7 * ditLength
+	wordPause     = 5 * ditLength
 	sentencePause = 10 * ditLength
 	freq          = 500
 	volume        = 80
@@ -26,65 +27,66 @@ var (
 	}
 )
 
-type morsePlayer struct {
-	music     *beep.Music
-	exchange  []string
-	freqHertz float64
-	vol       int
-	samples   []*[]int16
+type MorsePlayer struct {
+	Music     *beep.Music
+	Exchange  []string
+	FreqHertz float64
+	Vol       int
+	Samples   []*[]int16
 }
 
-func newMorsePlayer() *morsePlayer {
-	player := morsePlayer{
-		music:     beep.NewMusic(""),
-		exchange:  []string{},
-		freqHertz: beep.HertzToFreq(freq),
-		vol:       volume,
-		samples:   []*[]int16{},
+// NewMorsePlayer returns a pointer to a new MorsePlayer struct
+func NewMorsePlayer() *MorsePlayer {
+	player := MorsePlayer{
+		Music:     beep.NewMusic(""),
+		Exchange:  []string{},
+		FreqHertz: beep.HertzToFreq(freq),
+		Vol:       volume,
+		Samples:   []*[]int16{},
 	}
 	return &player
 }
 
-func (player *morsePlayer) Print() {
-	fmt.Printf("Player: freq: %f, vol: %d\n", player.freqHertz, player.vol)
+func (player *MorsePlayer) Print() {
+	fmt.Printf("Player: freq: %f, vol: %d\n", player.FreqHertz, player.Vol)
 }
 
-func (player *morsePlayer) PrintCW() {
-	for _, s := range player.exchange {
+func (player *MorsePlayer) PrintCW() {
+	for _, s := range player.Exchange {
 		fmt.Println(morse.EncodeITU(strings.ToLower(s)))
 	}
 }
 
-func (player *morsePlayer) CW() string {
+func (player *MorsePlayer) CW() string {
 	var cw string
-	for _, s := range player.exchange {
+	for _, s := range player.Exchange {
 		cw = fmt.Sprintf("%s\n%s", cw, morse.EncodeITU(strings.ToLower(s)))
 	}
 	return cw
 }
 
-func (player *morsePlayer) PrintText() {
-	for _, s := range player.exchange {
+func (player *MorsePlayer) PrintText() {
+	for _, s := range player.Exchange {
 		fmt.Println(s)
 	}
 }
 
-func (player *morsePlayer) PlayCW() {
-	for _, exch := range player.exchange {
+func (player *MorsePlayer) PlayCW() {
+	for _, exch := range player.Exchange {
 		player.buildCWSamplesRecursive(exch)
 		player.buildSentencePause()
 	}
-	for _, sample := range player.samples {
-		justPlayBeep(player.music, sample)
+	for _, sample := range player.Samples {
+		justPlayBeep(player.Music, sample)
 	}
 }
 
-func (player *morsePlayer) PlayRemoteHalf() {
+func (player *MorsePlayer) PlayRemoteHalf() {
 	return
 }
 
 // Rewrite this to be recursive
-func (player *morsePlayer) buildCWSamplesRecursive(s string) {
+func (player *MorsePlayer) buildCWSamplesRecursive(s string) {
 	if strings.Contains(s, " ") {
 		for _, w := range strings.Split(s, " ") {
 			player.buildCWSamplesRecursive(w)
@@ -99,7 +101,7 @@ func (player *morsePlayer) buildCWSamplesRecursive(s string) {
 	player.buildWordPause()
 }
 
-func (player *morsePlayer) buildWord(word string) {
+func (player *MorsePlayer) buildWord(word string) {
 	m := morse.EncodeITU(strings.ToLower(word))
 	for _, s := range strings.Split(m, "") {
 		if s == "-" {
@@ -113,7 +115,7 @@ func (player *morsePlayer) buildWord(word string) {
 	player.buildWordPause()
 }
 
-func (player *morsePlayer) buildProsign(prosign string) {
+func (player *MorsePlayer) buildProsign(prosign string) {
 	m := morse.EncodeITU(strings.ToLower(prosign))
 	for _, s := range strings.Split(m, "") {
 		if s == "-" {
@@ -124,32 +126,32 @@ func (player *morsePlayer) buildProsign(prosign string) {
 	}
 }
 
-func (player *morsePlayer) buildDit() {
-	newSamples := buildABeep(player.vol, ditLength, 1, player.freqHertz)
-	player.samples = append(player.samples, newSamples)
+func (player *MorsePlayer) buildDit() {
+	newSamples := buildABeep(player.Vol, ditLength, 1, player.FreqHertz)
+	player.Samples = append(player.Samples, newSamples)
 }
 
-func (player *morsePlayer) buildDah() {
-	newSamples := buildABeep(player.vol, dahLength, 1, player.freqHertz)
-	player.samples = append(player.samples, newSamples)
+func (player *MorsePlayer) buildDah() {
+	newSamples := buildABeep(player.Vol, dahLength, 1, player.FreqHertz)
+	player.Samples = append(player.Samples, newSamples)
 }
 
-func (player *morsePlayer) buildWordPause() {
+func (player *MorsePlayer) buildWordPause() {
 	player.buildPause(wordPause)
 }
 
-func (player *morsePlayer) buildSentencePause() {
+func (player *MorsePlayer) buildSentencePause() {
 	player.buildPause(sentencePause)
 }
 
-func (player *morsePlayer) buildLetterPause() {
+func (player *MorsePlayer) buildLetterPause() {
 	player.buildPause(letterPause)
 }
 
-func (player *morsePlayer) buildPause(pause int) {
+func (player *MorsePlayer) buildPause(pause int) {
 	var newSamples *[]int16
 	newSamples = buildABeep(0, pause, 1, 0.0)
-	player.samples = append(player.samples, newSamples)
+	player.Samples = append(player.Samples, newSamples)
 }
 
 func doABeep(duration int) {

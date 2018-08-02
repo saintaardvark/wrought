@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 	"wrought/ham"
+	"wrought/morsePlayer"
 
 	"github.com/dbatbold/beep"
 	"github.com/urfave/cli"
@@ -24,7 +25,7 @@ func main() {
 	rand.Seed(time.Now().Unix())
 	cx := &me
 	rx := ham.NewHam()
-	player := newMorsePlayer()
+	player := morsePlayer.NewMorsePlayer()
 	app := cli.NewApp()
 	app.Name = "wrought"
 	app.Usage = "CW trainer"

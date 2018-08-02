@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"wrought/ham"
+	"wrought/morsePlayer"
 )
 
 const (
@@ -60,11 +61,11 @@ func gnightBob2(caller, receiver *ham.Ham) string {
 		de(receiver.Callsign, caller.Callsign))
 }
 
-func buildQSO(caller, receiver *ham.Ham, player *morsePlayer) {
-	player.exchange = append(player.exchange, initialGreeting(caller, receiver))
-	player.exchange = append(player.exchange, firstExchange(caller, receiver))
-	player.exchange = append(player.exchange, secondExchange(caller, receiver))
-	player.exchange = append(player.exchange, gnightBob(caller, receiver))
+func buildQSO(caller, receiver *ham.Ham, player *morsePlayer.MorsePlayer) {
+	player.Exchange = append(player.Exchange, initialGreeting(caller, receiver))
+	player.Exchange = append(player.Exchange, firstExchange(caller, receiver))
+	player.Exchange = append(player.Exchange, secondExchange(caller, receiver))
+	player.Exchange = append(player.Exchange, gnightBob(caller, receiver))
 
 }
 
