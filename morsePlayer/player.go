@@ -27,6 +27,7 @@ var (
 	}
 )
 
+// MorsePlayer is a MorsePlayer struct
 type MorsePlayer struct {
 	Music     *beep.Music
 	Exchange  []string
@@ -47,16 +48,19 @@ func NewMorsePlayer() *MorsePlayer {
 	return &player
 }
 
+// Print prints out details about the MorsePlayer struct
 func (player *MorsePlayer) Print() {
 	fmt.Printf("Player: freq: %f, vol: %d\n", player.FreqHertz, player.Vol)
 }
 
+// PrintCW prints the Exchange in Morse code
 func (player *MorsePlayer) PrintCW() {
 	for _, s := range player.Exchange {
 		fmt.Println(morse.EncodeITU(strings.ToLower(s)))
 	}
 }
 
+// CW encodes the Exchange into Morse code
 func (player *MorsePlayer) CW() string {
 	var cw string
 	for _, s := range player.Exchange {
@@ -65,12 +69,14 @@ func (player *MorsePlayer) CW() string {
 	return cw
 }
 
+// PrintText prints the plain text of the Exchange
 func (player *MorsePlayer) PrintText() {
 	for _, s := range player.Exchange {
 		fmt.Println(s)
 	}
 }
 
+// PlayCW plays the entirety of the Exchange in Morse code
 func (player *MorsePlayer) PlayCW() {
 	for _, exch := range player.Exchange {
 		player.buildCWSamplesRecursive(exch)
@@ -81,6 +87,7 @@ func (player *MorsePlayer) PlayCW() {
 	}
 }
 
+// PlayRemoteHalf plays the remote half of the Exchange
 func (player *MorsePlayer) PlayRemoteHalf() {
 	return
 }
