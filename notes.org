@@ -2,13 +2,13 @@
   CLOSED: [2018-07-29 Sun 07:43]
 * DONE BT prosign
   CLOSED: [2018-07-29 Sun 16:21]
+* TODO Play remote half of the conversation
+  - that way, you can practice sending
 * TODO Allow for different beep lengths, pauses, etc
 * TODO fix kn recognition - strip newlines
 * TODO reorg packages a bit
 * TODO Shorter location
   - if US/Canada don't bother with country
-* TODO Play remote half of the conversation
-  - that way, you can practice sending
 * TODO config file
   - call sign, qth, etc
 * TODO More random conversation
