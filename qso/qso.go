@@ -18,10 +18,33 @@ type QSO struct {
 	Transmissions []*Exchange
 }
 
+// NewQSO returns a new QSO struct
+func NewQSO() *QSO {
+	qso := QSO{}
+	return &qso
+}
+
 // An Exchange is a sentence sent from one ham to another
 type Exchange struct {
-	Tx, Rx   *ham.Ham
-	Sentence string
+	Sender, Receiver *ham.Ham
+	Sentence         string
+}
+
+// NewExchange returns a new Exchange struct
+func NewExchange() *Exchange {
+	exchange := Exchange{}
+	return &exchange
+}
+
+// AppendExchange adds a new exchange to a QSO struct
+func (qso *QSO) AppendExchange(sender, receiver *ham.Ham, s string) {
+	exchange := Exchange{
+		Sender:   sender,
+		Receiver: receiver,
+		Sentence: s,
+	}
+	qso.Transmissions = append(qso.Transmissions, &exchange)
+}
 }
 
 func initialGreeting(caller, receiver *ham.Ham) string {
