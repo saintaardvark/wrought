@@ -12,6 +12,18 @@ const (
 	hwCpy  = "HW CPY?"
 )
 
+// A QSO is a set of exchanges between two hams
+type QSO struct {
+	Tx, Rx        *ham.Ham
+	Transmissions []*Exchange
+}
+
+// An Exchange is a sentence sent from one ham to another
+type Exchange struct {
+	Tx, Rx   *ham.Ham
+	Sentence string
+}
+
 func initialGreeting(caller, receiver *ham.Ham) string {
 	callerRepeat := fmt.Sprintf("%s %s %s", caller.Callsign, caller.Callsign, caller.Callsign)
 	receiverRepeat := fmt.Sprintf("%s %s %s", receiver.Callsign, receiver.Callsign, receiver.Callsign)
