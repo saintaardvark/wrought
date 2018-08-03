@@ -44,7 +44,17 @@ func (qso *QSO) AppendExchange(sender, receiver *ham.Ham, s string) {
 		Sentence: s,
 	}
 	qso.Transmissions = append(qso.Transmissions, &exchange)
+
+// PlayRemoteHalf plays the remote half of the Exchange
+func (qso *QSO) PlayRemoteHalf() {
+	return
 }
+
+// PrintText prints the plain text of the Exchange
+func (qso *QSO) PrintText() {
+	for _, s := range qso.Transmissions {
+		fmt.Println(s.Sentence)
+	}
 }
 
 func initialGreeting(caller, receiver *ham.Ham) string {

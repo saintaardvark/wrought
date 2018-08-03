@@ -69,13 +69,6 @@ func (player *MorsePlayer) CW() string {
 	return cw
 }
 
-// PrintText prints the plain text of the Exchange
-func (player *MorsePlayer) PrintText() {
-	for _, s := range player.Exchange {
-		fmt.Println(s)
-	}
-}
-
 // PlayCW plays the entirety of the Exchange in Morse code
 func (player *MorsePlayer) PlayCW() {
 	for _, exch := range player.Exchange {
@@ -85,11 +78,6 @@ func (player *MorsePlayer) PlayCW() {
 	for _, sample := range player.Samples {
 		justPlayBeep(player.Music, sample)
 	}
-}
-
-// PlayRemoteHalf plays the remote half of the Exchange
-func (player *MorsePlayer) PlayRemoteHalf() {
-	return
 }
 
 // Rewrite this to be recursive
