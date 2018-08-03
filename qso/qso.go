@@ -63,13 +63,13 @@ func (qso *QSO) PrintText() {
 }
 
 // BuildQSO creates a QSO between two hams
-func BuildQSO(caller, receiver *ham.Ham, player *morsePlayer.MorsePlayer) *QSO {
+func BuildQSO(sender, receiver *ham.Ham, player *morsePlayer.MorsePlayer) *QSO {
 	qso := NewQSO()
-	qso.AppendExchange(initialGreeting(caller, receiver))
-	qso.AppendExchange(firstExchange(receiver, caller))
-	qso.AppendExchange(secondExchange(caller, receiver))
-	qso.AppendExchange(gnightBob1(receiver, caller))
-	qso.AppendExchange(gnightBob2(caller, receiver))
+	qso.AppendExchange(initialGreeting(sender, receiver))
+	qso.AppendExchange(firstExchange(sender, receiver))
+	qso.AppendExchange(secondExchange(receiver, sender))
+	qso.AppendExchange(gnightBob1(sender, receiver))
+	qso.AppendExchange(gnightBob2(receiver, sender))
 	return qso
 }
 
@@ -86,7 +86,7 @@ func initialGreeting(sender, receiver *ham.Ham) *Exchange {
 
 func firstExchange(sender, receiver *ham.Ham) *Exchange {
 	msg := fmt.Sprintf("%s %s %s %s %s %s",
-		de(sender.Callsign, receiver.Callsign),
+		de(receiver.Callsign, sender.Callsign),
 		tnxBob,
 		qth(sender.Location),
 		name(sender.Name),
@@ -101,7 +101,7 @@ func firstExchange(sender, receiver *ham.Ham) *Exchange {
 
 func secondExchange(sender, receiver *ham.Ham) *Exchange {
 	msg := fmt.Sprintf("%s %s %s %s %s",
-		de(sender.Callsign, receiver.Callsign),
+		de(receiver.Callsign, sender.Callsign),
 		sldCpy,
 		name(receiver.Name),
 		qth(receiver.Location),
