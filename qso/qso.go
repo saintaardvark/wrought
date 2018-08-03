@@ -77,16 +77,17 @@ func (qso *QSO) PrintText() {
 }
 
 // BuildQSO creates a QSO between two hams
-func BuildQSO(sender, receiver *ham.Ham, player *morsePlayer.MorsePlayer) *QSO {
+// Tx is the initiator (the one calling CQ); Rx is the one who replies.
+func BuildQSO(Tx, Rx *ham.Ham, player *morsePlayer.MorsePlayer) *QSO {
 	qso := NewQSO()
-	qso.Tx = sender
-	qso.Rx = receiver
-	qso.AppendExchange(initialCQ(sender))
-	qso.AppendExchange(initialReply(receiver, sender))
-	qso.AppendExchange(firstExchange(sender, receiver))
-	qso.AppendExchange(secondExchange(receiver, sender))
-	qso.AppendExchange(gnightBob1(sender, receiver))
-	qso.AppendExchange(gnightBob2(receiver, sender))
+	qso.Tx = Tx
+	qso.Rx = Tx
+	qso.AppendExchange(initialCQ(Tx))
+	qso.AppendExchange(initialReply(Rx, Tx))
+	qso.AppendExchange(firstExchange(Tx, Rx))
+	qso.AppendExchange(secondExchange(Rx, Tx))
+	qso.AppendExchange(gnightBob1(Tx, Rx))
+	qso.AppendExchange(gnightBob2(Rx, Tx))
 	return qso
 }
 
