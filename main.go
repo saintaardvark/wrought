@@ -20,6 +20,7 @@ var (
 		Location: "NEW WESTMINSTER BC CANADA",
 		Name:     "HUGH",
 	}
+	version string
 )
 
 func main() {
@@ -30,6 +31,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "wrought"
 	app.Usage = "CW trainer"
+	app.Version = version
 
 	if err := beep.OpenSoundDevice("default"); err != nil {
 		fmt.Printf("Can't open sound device: %s\n", err.Error())
