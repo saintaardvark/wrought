@@ -37,11 +37,10 @@ func NewExchange() *Exchange {
 }
 
 // AppendExchange adds a new exchange to a QSO struct
-func (qso *QSO) AppendExchange(sender, receiver *ham.Ham, s string) {
-	exchange := Exchange{
-		Sender:   sender,
-		Receiver: receiver,
-		Sentence: s,
+func (qso *QSO) AppendExchange(exchange *Exchange) {
+	qso.Transmissions = append(qso.Transmissions, exchange)
+}
+
 	}
 	qso.Transmissions = append(qso.Transmissions, &exchange)
 
@@ -57,62 +56,88 @@ func (qso *QSO) PrintText() {
 	}
 }
 
-func initialGreeting(caller, receiver *ham.Ham) string {
-	callerRepeat := fmt.Sprintf("%s %s %s", caller.Callsign, caller.Callsign, caller.Callsign)
+// BuildQSO creates a QSO between two hams
+func BuildQSO(caller, receiver *ham.Ham, player *morsePlayer.MorsePlayer) *QSO {
+	qso := NewQSO()
+	qso.AppendExchange(initialGreeting(caller, receiver))
+	qso.AppendExchange(firstExchange(receiver, caller))
+	qso.AppendExchange(secondExchange(caller, receiver))
+	qso.AppendExchange(gnightBob1(receiver, caller))
+	qso.AppendExchange(gnightBob2(caller, receiver))
+	return qso
+}
+
+func initialGreeting(sender, receiver *ham.Ham) *Exchange {
+	senderRepeat := fmt.Sprintf("%s %s %s", sender.Callsign, sender.Callsign, sender.Callsign)
 	receiverRepeat := fmt.Sprintf("%s %s %s", receiver.Callsign, receiver.Callsign, receiver.Callsign)
-	msg := fmt.Sprintf("CQ CQ CQ DE %s K\n%s DE %s KN\n", callerRepeat, caller.Callsign, receiverRepeat)
-	return msg
+	msg := fmt.Sprintf("CQ CQ CQ DE %s K\n%s DE %s KN\n", senderRepeat, sender.Callsign, receiverRepeat)
+	return &Exchange{
+		Sender:   sender,
+		Receiver: receiver,
+		Sentence: msg,
+	}
 }
 
-func firstExchange(caller, receiver *ham.Ham) string {
-	return fmt.Sprintf("%s %s %s %s %s %s",
-		de(receiver.Callsign, caller.Callsign),
+func firstExchange(sender, receiver *ham.Ham) *Exchange {
+	msg := fmt.Sprintf("%s %s %s %s %s %s",
+		de(sender.Callsign, receiver.Callsign),
 		tnxBob,
-		qth(caller.Location),
-		name(caller.Name),
+		qth(sender.Location),
+		name(sender.Name),
 		hwCpy,
-		kn(receiver.Callsign, caller.Callsign))
+		kn(sender.Callsign, receiver.Callsign))
+	return &Exchange{
+		Sender:   sender,
+		Receiver: receiver,
+		Sentence: msg,
+	}
 }
 
-func secondExchange(caller, receiver *ham.Ham) string {
-	return fmt.Sprintf("%s %s %s %s %s",
-		de(caller.Callsign, receiver.Callsign),
+func secondExchange(sender, receiver *ham.Ham) *Exchange {
+	msg := fmt.Sprintf("%s %s %s %s %s",
+		de(sender.Callsign, receiver.Callsign),
 		sldCpy,
 		name(receiver.Name),
 		qth(receiver.Location),
-		kn(caller.Callsign, receiver.Callsign))
+		kn(sender.Callsign, receiver.Callsign))
+	return &Exchange{
+		Sender:   sender,
+		Receiver: receiver,
+		Sentence: msg,
+	}
 }
 
-func gnightBob(caller, receiver *ham.Ham) string {
-	msg := gnightBob1(caller, receiver)
-	msg += "\n" + gnightBob2(receiver, caller)
-	return msg
-}
+// func gnightBob(caller, receiver *ham.Ham) *Exchange {
+// 	msg := gnightBob1(caller, receiver)
+// 	msg += "\n" + gnightBob2(receiver, caller)
+// 	return msg
+// }
 
-func gnightBob1(caller, receiver *ham.Ham) string {
-	return fmt.Sprintf("%s %s %s %s %s",
-		de(receiver.Callsign, caller.Callsign),
+func gnightBob1(sender, receiver *ham.Ham) *Exchange {
+	msg := fmt.Sprintf("%s %s %s %s %s",
+		de(receiver.Callsign, sender.Callsign),
 		"TNX FER FB QSO",
 		receiver.Name,
 		"HP CU AGN BT VY 73 TO U ES URS SK",
-		de(receiver.Callsign, caller.Callsign))
+		de(receiver.Callsign, sender.Callsign))
+	return &Exchange{
+		Sender:   sender,
+		Receiver: receiver,
+		Sentence: msg,
+	}
 }
 
-func gnightBob2(caller, receiver *ham.Ham) string {
-	return fmt.Sprintf("%s %s %s %s",
-		de(receiver.Callsign, caller.Callsign),
+func gnightBob2(sender, receiver *ham.Ham) *Exchange {
+	msg := fmt.Sprintf("%s %s %s %s",
+		de(receiver.Callsign, sender.Callsign),
 		"TNX FER QSO "+receiver.Name,
 		"BCNU BT VY 73 TO U ES URS SK",
-		de(receiver.Callsign, caller.Callsign))
-}
-
-// BuildQSO creates an exchange between two hams
-func BuildQSO(caller, receiver *ham.Ham, player *morsePlayer.MorsePlayer) {
-	player.Exchange = append(player.Exchange, initialGreeting(caller, receiver))
-	player.Exchange = append(player.Exchange, firstExchange(caller, receiver))
-	player.Exchange = append(player.Exchange, secondExchange(caller, receiver))
-	player.Exchange = append(player.Exchange, gnightBob(caller, receiver))
-
+		de(receiver.Callsign, sender.Callsign))
+	return &Exchange{
+		Sender:   sender,
+		Receiver: receiver,
+		Sentence: msg,
+	}
 }
 
 func name(name string) string {
