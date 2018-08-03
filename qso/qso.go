@@ -81,7 +81,8 @@ func BuildQSO(sender, receiver *ham.Ham, player *morsePlayer.MorsePlayer) *QSO {
 	qso := NewQSO()
 	qso.Tx = sender
 	qso.Rx = receiver
-	qso.AppendExchange(initialGreeting(sender, receiver))
+	qso.AppendExchange(initialCQ(sender))
+	qso.AppendExchange(initialReply(receiver, sender))
 	qso.AppendExchange(firstExchange(sender, receiver))
 	qso.AppendExchange(secondExchange(receiver, sender))
 	qso.AppendExchange(gnightBob1(sender, receiver))
@@ -89,13 +90,22 @@ func BuildQSO(sender, receiver *ham.Ham, player *morsePlayer.MorsePlayer) *QSO {
 	return qso
 }
 
-func initialGreeting(sender, receiver *ham.Ham) *Exchange {
+// initialCQ returns an Exchange containing a CQ call
+func initialCQ(sender *ham.Ham) *Exchange {
 	senderRepeat := fmt.Sprintf("%s %s %s", sender.Callsign, sender.Callsign, sender.Callsign)
-	receiverRepeat := fmt.Sprintf("%s %s %s", receiver.Callsign, receiver.Callsign, receiver.Callsign)
-	msg := fmt.Sprintf("CQ CQ CQ DE %s K\n%s DE %s KN\n", senderRepeat, sender.Callsign, receiverRepeat)
+	msg := fmt.Sprintf("CQ CQ CQ DE %s K", senderRepeat)
 	return &Exchange{
 		Sender:   sender,
-		Receiver: receiver,
+		Sentence: msg,
+	}
+}
+
+// initialReply returns an Exchange replying to a CQ call
+func initialReply(sender, receiver *ham.Ham) *Exchange {
+	replyRepeat := fmt.Sprintf("%s %s %s", sender.Callsign, sender.Callsign, sender.Callsign)
+	msg := fmt.Sprintf("%s DE %s KN", receiver.Callsign, replyRepeat)
+	return &Exchange{
+		Sender:   sender,
 		Sentence: msg,
 	}
 }
