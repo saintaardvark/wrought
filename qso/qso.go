@@ -14,6 +14,8 @@ const (
 
 // A QSO is a set of exchanges between two hams
 type QSO struct {
+	// Tx is the Ham calling CQ
+	// RX is the Ham responding
 	Tx, Rx        *ham.Ham
 	Transmissions []*Exchange
 }
@@ -65,6 +67,8 @@ func (qso *QSO) PrintText() {
 // BuildQSO creates a QSO between two hams
 func BuildQSO(sender, receiver *ham.Ham, player *morsePlayer.MorsePlayer) *QSO {
 	qso := NewQSO()
+	qso.Tx = sender
+	qso.Rx = receiver
 	qso.AppendExchange(initialGreeting(sender, receiver))
 	qso.AppendExchange(firstExchange(sender, receiver))
 	qso.AppendExchange(secondExchange(receiver, sender))
