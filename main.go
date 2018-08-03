@@ -64,7 +64,7 @@ func main() {
 			Name:  "half",
 			Usage: "Play remote half of conversation with pauses, so you can practice keying",
 			Action: func(c *cli.Context) error {
-				qso.PlayRemoteHalf()
+				qso.PlayRemoteHalf(player)
 				return nil
 			},
 		},

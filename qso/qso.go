@@ -53,8 +53,13 @@ func (qso *QSO) PlayCW(player *morsePlayer.MorsePlayer) {
 }
 
 // PlayRemoteHalf plays the remote half of the Exchange
-func (qso *QSO) PlayRemoteHalf() {
-	return
+func (qso *QSO) PlayRemoteHalf(player *morsePlayer.MorsePlayer) {
+	for _, exch := range qso.Transmissions {
+		if exch.Sender.Callsign == qso.Tx.Callsign {
+			player.PlayCW([]*string{&exch.Sentence})
+			fmt.Println("Your turn!")
+		}
+	}
 }
 
 // PrintText prints the plain text of the Exchange
