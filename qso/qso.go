@@ -81,7 +81,7 @@ func (qso *QSO) PrintText() {
 func BuildQSO(Tx, Rx *ham.Ham, player *morsePlayer.MorsePlayer) *QSO {
 	qso := NewQSO()
 	qso.Tx = Tx
-	qso.Rx = Tx
+	qso.Rx = Rx
 	qso.AppendExchange(initialCQ(Tx))
 	qso.AppendExchange(initialReply(Rx, Tx))
 	qso.AppendExchange(firstExchange(Tx, Rx))
