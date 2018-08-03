@@ -69,10 +69,10 @@ func (player *MorsePlayer) CW() string {
 	return cw
 }
 
-// PlayCW plays the entirety of the Exchange in Morse code
-func (player *MorsePlayer) PlayCW() {
-	for _, exch := range player.Exchange {
-		player.buildCWSamplesRecursive(exch)
+// PlayCW plays an array of sentences in Morse Code
+func (player *MorsePlayer) PlayCW(s []*string) {
+	for _, exch := range s {
+		player.buildCWSamplesRecursive(*exch)
 		player.buildSentencePause()
 	}
 	for _, sample := range player.Samples {

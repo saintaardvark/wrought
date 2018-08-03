@@ -41,8 +41,14 @@ func (qso *QSO) AppendExchange(exchange *Exchange) {
 	qso.Transmissions = append(qso.Transmissions, exchange)
 }
 
+// PlayCW plays a QSO's exchange as Morse code
+func (qso *QSO) PlayCW(player *morsePlayer.MorsePlayer) {
+	var sentences []*string
+	for _, exch := range qso.Transmissions {
+		sentences = append(sentences, &exch.Sentence)
 	}
-	qso.Transmissions = append(qso.Transmissions, &exchange)
+	player.PlayCW(sentences)
+}
 
 // PlayRemoteHalf plays the remote half of the Exchange
 func (qso *QSO) PlayRemoteHalf() {
