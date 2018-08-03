@@ -1,7 +1,9 @@
 package qso
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"wrought/ham"
 	"wrought/morsePlayer"
 )
@@ -54,10 +56,15 @@ func (qso *QSO) PlayCW(player *morsePlayer.MorsePlayer) {
 
 // PlayRemoteHalf plays the remote half of the Exchange
 func (qso *QSO) PlayRemoteHalf(player *morsePlayer.MorsePlayer) {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Send your CQ and hit [enter] when ready to continue...")
+	reader.ReadString('\n')
 	for _, exch := range qso.Transmissions {
-		if exch.Sender.Callsign == qso.Tx.Callsign {
+		if exch.Sender.Callsign == qso.Rx.Callsign {
 			player.PlayCW([]*string{&exch.Sentence})
-			fmt.Println("Your turn!")
+
+			fmt.Print("Your turn! Hit [enter] when ready to continue...")
+			reader.ReadString('\n')
 		}
 	}
 }
