@@ -10,13 +10,13 @@ import (
 )
 
 const (
-	ditLength     = 150
-	dahLength     = 300
-	letterPause   = 3 * ditLength
-	wordPause     = 5 * ditLength
-	sentencePause = 10 * ditLength
-	freq          = 500
-	volume        = 80
+	defaultDitLength     = 150
+	defaultDahLength     = 300
+	defaultLetterPause   = 3 * defaultDitLength
+	defaultWordPause     = 5 * defaultDitLength
+	defaultSentencePause = 10 * defaultDitLength
+	defaultFreq          = 500
+	defaultVolume        = 80
 )
 
 var (
@@ -29,21 +29,31 @@ var (
 
 // MorsePlayer is a MorsePlayer struct
 type MorsePlayer struct {
-	Music     *beep.Music
-	Exchange  []string
-	FreqHertz float64
-	Vol       int
-	Samples   []*[]int16
+	Music         *beep.Music
+	Exchange      []string
+	FreqHertz     float64
+	Vol           int
+	Samples       []*[]int16
+	DitLength     int
+	DahLength     int
+	LetterPause   int
+	WordPause     int
+	SentencePause int
 }
 
 // NewMorsePlayer returns a pointer to a new MorsePlayer struct
 func NewMorsePlayer() *MorsePlayer {
 	player := MorsePlayer{
-		Music:     beep.NewMusic(""),
-		Exchange:  []string{},
-		FreqHertz: beep.HertzToFreq(freq),
-		Vol:       volume,
-		Samples:   []*[]int16{},
+		Music:         beep.NewMusic(""),
+		Exchange:      []string{},
+		FreqHertz:     beep.HertzToFreq(defaultFreq),
+		Vol:           defaultVolume,
+		Samples:       []*[]int16{},
+		DitLength:     defaultDitLength,
+		DahLength:     defaultDahLength,
+		LetterPause:   defaultLetterPause,
+		WordPause:     defaultWordPause,
+		SentencePause: defaultSentencePause,
 	}
 	return &player
 }
@@ -122,25 +132,25 @@ func (player *MorsePlayer) buildProsign(prosign string) {
 }
 
 func (player *MorsePlayer) buildDit() {
-	newSamples := buildABeep(player.Vol, ditLength, 1, player.FreqHertz)
+	newSamples := buildABeep(player.Vol, player.DitLength, 1, player.FreqHertz)
 	player.Samples = append(player.Samples, newSamples)
 }
 
 func (player *MorsePlayer) buildDah() {
-	newSamples := buildABeep(player.Vol, dahLength, 1, player.FreqHertz)
+	newSamples := buildABeep(player.Vol, player.DahLength, 1, player.FreqHertz)
 	player.Samples = append(player.Samples, newSamples)
 }
 
 func (player *MorsePlayer) buildWordPause() {
-	player.buildPause(wordPause)
+	player.buildPause(player.WordPause)
 }
 
 func (player *MorsePlayer) buildSentencePause() {
-	player.buildPause(sentencePause)
+	player.buildPause(player.SentencePause)
 }
 
 func (player *MorsePlayer) buildLetterPause() {
-	player.buildPause(letterPause)
+	player.buildPause(player.LetterPause)
 }
 
 func (player *MorsePlayer) buildPause(pause int) {
