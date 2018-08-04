@@ -149,20 +149,6 @@ func (player *MorsePlayer) buildPause(pause int) {
 	player.Samples = append(player.Samples, newSamples)
 }
 
-func doABeep(duration int) {
-	// Just send empty string
-	music := beep.NewMusic("")
-	playBeep(music, volume, duration, 1, beep.HertzToFreq(freq))
-}
-
-func dit() {
-	doABeep(150)
-}
-
-func dah() {
-	doABeep(300)
-}
-
 // Taken from github.com/dbatbold/beep; 2-term BSD license
 // Thanks, dbatbold!
 func playBeep(music *beep.Music, volume, duration, count int, freq float64) {
