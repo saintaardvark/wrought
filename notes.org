@@ -4,10 +4,12 @@
   CLOSED: [2018-07-29 Sun 16:21]
 * DONE reorg packages a bit
   CLOSED: [2018-08-02 Thu 13:04]
-* TODO Play remote half of the conversation
+* DONE Play remote half of the conversation
+  CLOSED: [2018-08-04 Sat 08:54]
   - that way, you can practice sending
+* DONE fix kn recognition - strip newlines
+  CLOSED: [2018-08-04 Sat 08:54]
 * TODO Allow for different beep lengths, pauses, etc
-* TODO fix kn recognition - strip newlines
 * TODO Shorter location
   - if US/Canada don't bother with country
 * TODO config file
