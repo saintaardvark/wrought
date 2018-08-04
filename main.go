@@ -43,6 +43,15 @@ func main() {
 	defer beep.CloseSoundDevice()
 	qso := qso.BuildQSO(cx, rx, player)
 
+	app.Flags = []cli.Flag{
+		cli.IntFlag{
+			Name:        "ditLength",
+			Value:       150, // FIXME: Not sure how to access the default in player package
+			Usage:       "dit length in ms",
+			Destination: &player.DitLength,
+		},
+	}
+
 	app.Commands = []cli.Command{
 		{
 			Name:  "play",
