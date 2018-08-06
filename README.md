@@ -9,3 +9,7 @@ So far its two main functions are:
 ## Sources
 
 - https://github.com/datasets/world-cities
+
+## License
+
+Licensed under the MIT license; see LICENSE.md.
