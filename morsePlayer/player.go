@@ -90,6 +90,11 @@ func (player *MorsePlayer) PlayCW(s []*string) {
 	}
 }
 
+// Clear erases all existing samples in a MorsePlayer struct
+func (player *MorsePlayer) Clear() {
+	player.Samples = []*[]int16{}
+}
+
 // Rewrite this to be recursive
 func (player *MorsePlayer) buildCWSamplesRecursive(s string) {
 	if strings.Contains(s, " ") {

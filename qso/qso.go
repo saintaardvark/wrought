@@ -62,7 +62,7 @@ func (qso *QSO) PlayRemoteHalf(player *morsePlayer.MorsePlayer) {
 	for _, exch := range qso.Transmissions {
 		if exch.Sender.Callsign == qso.Rx.Callsign {
 			player.PlayCW([]*string{&exch.Sentence})
-
+			player.Clear()
 			fmt.Print("Your turn! Hit [enter] when ready to continue...")
 			reader.ReadString('\n')
 		}
