@@ -130,8 +130,8 @@ func secondExchange(sender, receiver *ham.Ham) *Exchange {
 	msg := fmt.Sprintf("%s %s %s %s %s",
 		de(receiver.Callsign, sender.Callsign),
 		sldCpy,
-		name(receiver.Name),
-		qth(receiver.Location),
+		name(sender.Name),
+		qth(sender.Location),
 		kn(sender.Callsign, receiver.Callsign))
 	return &Exchange{
 		Sender:   sender,
